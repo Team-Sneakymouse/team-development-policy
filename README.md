@@ -9,6 +9,7 @@ Shared Team-Sneakymouse / rawb.tv development policy and an agent-assisted devel
 - [Core policy](policy/core.md): scope, authorization, instruction conflicts, and evidence.
 - [Scope and testing](policy/scope-and-testing.md): proportional verification and test implementation.
 - [Development workflow](workflows/development.md): lightweight stages and risk gates.
+- [Efficiency-review skill](skills/efficiency-review/SKILL.md): optional Minecraft/Paper and JVM hot-path reviews; draft only, not installed.
 - [Adapter design](adapters/README.md): Hermes, Cursor, Codex, Claude Code, Antigravity.
 - [Installer design](installer/DESIGN.md): explicit, versioned installation; no executable installer yet.
 - [Project context example](examples/project-context.md): local facts, not duplicated team policy.
