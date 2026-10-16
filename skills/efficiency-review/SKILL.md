@@ -43,11 +43,9 @@ Use for an explicit efficiency review, a suspected bottleneck, or changed hot pa
 - Consider a maintained typed/spatial index only when justified; account for movement, world changes, unloads, removals, synchronization, and index maintenance cost.
 - Preserve hitbox overlap versus point distance, sphere versus axis-aligned box, world scope, boundary inclusivity, and special-entity behavior. A squared-distance shortcut is not automatically behavior-identical at rounding/edge boundaries.
 
-### Displays, markers, and client rendering
+### Displays and client rendering
 
-- Review display-entity view range/render distance, tracking settings, visibility, entity count, model complexity, and per-viewer update cadence. Distinguish client rendering range from server tracking/network range; verify API units and implementation for the target version. Measure client FPS as well as server timing.
-- Identify the actual entity type used as a marker; do not equate an armor stand's marker flag with a dedicated marker entity. For dedicated markers, inspect Paper's effective world-level marker-ticking setting, including the default world configuration and per-world overrides, before reporting ticking overhead. Team baseline reported by DaniDipp: marker ticking is disabled in the default world config; verify the relevant deployed world's effective value rather than treating that report as a live configuration read. If ticking is required, document why and consider an approved override for only the necessary worlds; enabling it affects markers throughout that world, not just this plugin's entities. Per-entity control via Ignite/custom patches is a speculative option requiring separate investigation and approval, not an assumed supported API.
-- Separately inspect plugin-scheduled marker work and, for the actual entity type, AI, gravity, and collision behavior where applicable. Disabling vanilla marker ticking does not disable plugin scans/tasks or eliminate storage, query, and chunk-lifecycle costs. Do not change server configuration or introduce patches merely to perform a review.
+- Review plugin-controlled display-entity view range/render distance, visibility, entity count, model complexity, and per-viewer update cadence. Distinguish client rendering cost from network delivery cost; verify API units and implementation for the target version. Measure client FPS as well as server timing.
 - Audit large spawn bursts and entity churn. Prefer reuse/differential updates where safe; bound spawn/removal work and viewer synchronization. Clean up on disable, world unload, and ownership removal; avoid duplicate restoration on reload.
 - Ask whether visual interpolation, transformations, resource-pack models, or client-side presentation can replace repeated server computation/packets. Keep authoritative gameplay, permissions, economy, and collision decisions server-controlled. Account for client compatibility and resource-pack costs; do not simply move lag from server to clients.
 
@@ -94,7 +92,7 @@ If no actionable finding is supported, say so and name unmeasured risks. Do not 
 - Treating `getNearbyPlayers` or a typed result as proof of an early typed/indexed query.
 - Classifying by line count instead of workload and blast radius.
 - Recommending “make it async” without ownership, queue bounds, or stale-result fencing.
-- Assuming disabled ticking or reduced render distance removes every entity cost.
+- Assuming reduced display render distance removes every entity cost.
 - Replacing an exact spatial/recipient rule with a superficially cheaper but different one.
 - Expanding a review into implementation or new testing infrastructure without permission.
 
