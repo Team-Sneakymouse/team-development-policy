@@ -2,16 +2,18 @@
 
 Examples only; no files here are installed.
 
-Adapters translate discovery, not policy meaning. All agents should load the same pinned policy documents plus local project facts.
+Adapters translate discovery, not policy meaning. All agents should load the same policy documents from a resolved checkout of this repository, plus local project facts.
 
 ## Source of truth
 
-- **Runtime (enrolled project):** the committed project `.team-policy/` payload is what agents read. The manifest pins the immutable revision id and file hashes for that payload.
-- **Upstream (this policy repo):** an approved immutable commit is what the installer copies from when installing or updating.
-- **Mismatch:** if manifest revision/hashes do not match the files on disk, or if someone edits managed payload files outside the installer, stop and report. Do not silently prefer “latest upstream,” conversation memory, or a partial copy.
-- **Updates:** only an explicit installer update rewrites the payload to match a newly approved upstream revision. Day-to-day agent work never fetches policy from the network.
+Default enrollment mode: **sibling checkout**.
 
-Whether the payload is committed is an approval decision; the default proposal is a committed project snapshot for reproducibility. [Bootstrap example](examples/bootstrap.md) is plain content for integration into native instruction files after approval. It is not itself an automatically discovered instruction file.
+- **Runtime:** agents resolve a local clone of `Team-Sneakymouse/team-development-policy` using `.team-policy/pointer.json` (`local_candidates`, then clone `remote` if missing). They read `policy/`, `workflows/`, and optional `skills/` from that checkout.
+- **Stay current:** when the checkout exists but is behind `origin/<track_branch>`, fetch and fast-forward that branch when safe. Do not invent policy from memory, a web mirror, or an unlisted path.
+- **Track branch:** pilots track `main` of this repo. Pinning an immutable tag/commit remains available for locked evaluations; say so in the pointer if used.
+- **Optional alternate:** a committed project `.team-policy/` file snapshot (schema v1) for machines without a multi-repo workspace. Prefer the sibling pointer for LoM developer machines.
+
+[Bootstrap example](examples/bootstrap.md) is plain content for integration into native instruction files after enrollment. It is not itself an automatically discovered instruction file.
 
 ## Hermes
 
@@ -23,11 +25,11 @@ Candidate: repository `AGENTS.md` containing the bootstrap and local facts. Offi
 
 ## Cursor
 
-Candidate: project `.cursor/rules/team-policy.mdc` with `alwaysApply: true` to load the bootstrap, or a validated project `AGENTS.md` integration. [MDC example](examples/cursor-rule.mdc) is inert in this repository. Keep optional testing procedures conditional, rather than always loading detailed test rules. Avoid installing both paths with duplicated/conflicting policy.
+Candidate: project `.cursor/rules/team-policy.mdc` with `alwaysApply: true` pointing at `AGENTS.md` (which holds the managed bootstrap), or an inline bootstrap. [MDC example](examples/cursor-rule.mdc) is inert in this repository. Keep optional testing procedures conditional. Avoid installing both paths with duplicated/conflicting policy.
 
 ## Claude Code
 
-Candidate: project `CLAUDE.md` containing explicit read instructions for the project payload and local facts. Native import syntax and user-level discovery need verification on selected versions; the adapter does not depend on an assumed cross-agent import syntax. Official memory documentation could not be retrieved during authoring (HTTP 403). **Design-scope only** until fresh-session validation succeeds.
+Candidate: project `CLAUDE.md` containing explicit read instructions for the resolved policy checkout and local facts. Native import syntax and user-level discovery need verification on selected versions; the adapter does not depend on an assumed cross-agent import syntax. Official memory documentation could not be retrieved during authoring (HTTP 403). **Design-scope only** until fresh-session validation succeeds.
 
 ## Antigravity
 
@@ -35,7 +37,7 @@ Provide the [plain bootstrap example](examples/bootstrap.md) as candidate conten
 
 ## Conformance for every adapter
 
-- Show the pinned revision and source files in a fresh session, without relying on past conversation memory.
+- Resolve the policy checkout from the pointer (existing sibling, pull-when-behind, or clone) in a fresh session without relying on past conversation memory.
 - Demonstrate that core policy loads via the thin bootstrap; further docs load on branch as specified.
 - Run the tiny-edit and high-risk scenarios from [review scenarios](../review/scenarios.md).
 - Check conflicts, nested projects, existing personal rules, product limits, and selected OS.

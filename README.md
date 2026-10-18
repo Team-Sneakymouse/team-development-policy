@@ -1,6 +1,6 @@
 # Team development policy
 
-Shared Team-Sneakymouse / rawb.tv development policy and an agent-assisted development lifecycle (ADLC), independent of a particular agent. This repository does not supersede existing project instructions until installed under an approved revision.
+Shared Team-Sneakymouse / rawb.tv development policy and an agent-assisted development lifecycle (ADLC), independent of a particular agent. Enrolled projects point at a sibling checkout of this repository (see adapters); they do not supersede local instructions until that bootstrap is present.
 
 ## Start here
 
@@ -9,8 +9,8 @@ Shared Team-Sneakymouse / rawb.tv development policy and an agent-assisted devel
 - [SneakyUtils](policy/sneakyutils.md): when to use and contribute shared Paper utilities.
 - [Development workflow](workflows/development.md): lightweight stages, risk gates, and nontrivial evidence shape.
 - [Efficiency-review skill](skills/efficiency-review/SKILL.md): optional Minecraft/Paper and JVM hot-path reviews; load only when relevant; not installed by this repository.
-- [Adapter design](adapters/README.md): discovery adapters and enrolled-payload source of truth.
-- [Installer design](installer/DESIGN.md): explicit, versioned installation; no executable installer yet.
+- [Adapter design](adapters/README.md): discovery adapters and sibling-checkout source of truth.
+- [Installer design](installer/DESIGN.md): pointer + bootstrap enrollment; no executable installer yet.
 - [Project context example](examples/project-context.md): local facts, not duplicated team policy.
 - [Review scenarios](review/scenarios.md): human/agent behavioral acceptance checks.
 - [Approval checklist](review/approval.md): pilot vs general enrollment gates.

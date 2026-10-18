@@ -1,9 +1,15 @@
 # Candidate team-policy bootstrap
 
-Do not copy into active instructions until an approved revision is installed.
+Managed bootstrap for enrolled projects (sibling-checkout mode). Keep this block thin; load further docs on branch.
 
-The future installer will materialize this only for an explicitly approved revision. Candidate instruction body (keep this block thin; load further docs on branch):
+Candidate instruction body:
 
-> This project is enrolled in Team-Sneakymouse development policy. Before implementing, or when authorization or risk is unclear, read `.team-policy/manifest.json` and `.team-policy/policy/core.md` from this project root. Read `.team-policy/policy/scope-and-testing.md` when classifying risk or changing behavior. Read `.team-policy/workflows/development.md` for nontrivial multi-step work. Read `.team-policy/policy/sneakyutils.md` when adding or sharing Paper util/manager code. Report a missing payload or a manifest/payload revision mismatch rather than substituting remembered rules. Load optional skills only when relevant. Follow local build/architecture facts and explicit exceptions. When host instructions and team policy repeat the same norm, follow the host wording. If they require incompatible actions, surface the conflict before expanding work. Distinguish running checks from implementing tests; a source edit does not automatically require a new test.
+> This project is enrolled in Team-Sneakymouse development policy via a sibling checkout (see `.team-policy/pointer.json`).
+>
+> Resolve the policy root: try each `local_candidates` path in the pointer relative to this project root. If none exist, `git clone` the pointer `remote` into the first candidate using the developer's existing Git credentials. If a checkout exists but is behind `origin/<track_branch>`, `git fetch` and fast-forward that branch when safe; if local edits block the update, report and ask.
+>
+> Before implementing, or when authorization or risk is unclear, read `<policy-root>/policy/core.md`. Read `<policy-root>/policy/scope-and-testing.md` when classifying risk or changing behavior. Read `<policy-root>/workflows/development.md` for nontrivial multi-step work. Read `<policy-root>/policy/sneakyutils.md` when adding or sharing Paper util/manager code. Load optional skills from `<policy-root>/skills/` only when relevant.
+>
+> Do not substitute remembered rules, a web mirror, or an unlisted path. Follow local build/architecture facts and explicit exceptions. When host instructions and team policy repeat the same norm, follow the host wording. If they require incompatible actions, surface the conflict before expanding work. Distinguish running checks from implementing tests; a source edit does not automatically require a new test.
 
-The project root and installed revision must be resolved by the approved adapter; do not assume paths are relative to an arbitrary shell working directory. A future installer must generate an explicit resolved root/reference where needed.
+Resolve paths from the project root (or an adapter-generated absolute root), not from an arbitrary shell working directory.

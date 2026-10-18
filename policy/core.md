@@ -30,7 +30,7 @@ An authorized force-push requires a **lease** in the current task: the exact ref
 - Optional skills supply procedures, not stronger policy. Select only relevant procedures; do not load a strict TDD skill simply because a source file changes.
 - **Same norm, two homes:** when host user rules or product defaults already encode the same requirement (branches, commits, secrets, evidence), follow the host wording and skip restating a second procedure. Surface conflicts only when instructions require incompatible actions, not when they repeat the same intent.
 - If mandatory existing instructions conflict with requested scope, explain the exact conflict before expanding the work. Ask for a scoped exception if needed; do not silently ignore either side.
-- Stop and report when shared policy is missing, inaccessible, or inconsistent with the recorded revision. Do not silently substitute an unpinned online copy or remembered policy.
+- Stop and report when the enrolled policy checkout cannot be resolved (missing pointer, clone/pull failure, or unreadable docs). Do not silently substitute a web mirror, remembered policy, or an unlisted path.
 
 ## Work and evidence
 

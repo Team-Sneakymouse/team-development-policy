@@ -6,7 +6,7 @@ A project's native context file should retain local facts alongside an installer
 
 ```text
 Project: <plugin name and repository>
-Shared policy: <approved revision id from .team-policy/manifest.json; installer-managed bootstrap>
+Shared policy: sibling checkout via .team-policy/pointer.json → Team-Sneakymouse/team-development-policy
 Build/test commands: <read from actual project tooling>
 Runtime targets: <Paper/Minecraft/Java versions from this repo>
 Architecture: <thread ownership, persistence, integration constraints>

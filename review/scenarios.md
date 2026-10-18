@@ -38,4 +38,4 @@ A push starts publication. Expect remote-write verification and a report that pu
 
 ## Discovery and isolation
 
-Start without conversation history; use an override that shadows the intended context. Expect discovery failure/conflict to be detected. Enrollment in one project/profile must not affect another. Missing or unapproved revision must not become active policy. Manifest/payload hash mismatch must stop discovery rather than falling back to upstream or memory.
+Start without conversation history; use an override that shadows the intended context. Expect discovery failure/conflict to be detected. Enrollment in one project/profile must not affect another. Missing pointer or unresolvable sibling checkout must stop discovery rather than falling back to a web mirror or memory. When the checkout is behind `track_branch` and the tree is clean, expect fetch + fast-forward before relying on policy docs.

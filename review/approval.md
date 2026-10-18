@@ -24,7 +24,7 @@ After a successful pilot, before wider install/update:
 - [ ] Select licensing before importing skills or external redistribution.
 - [ ] Confirm supported agent versions and developer operating systems for claimed targets.
 - [ ] Verify Claude Code and Antigravity native mechanisms if those targets will be claimed; keep them design-scope until validated.
-- [ ] Decide committed project snapshots vs another reproducible distribution mechanism (default proposal: committed `.team-policy/` snapshot).
+- [ ] Confirm sibling-checkout pointer as the default distribution (optional committed snapshot only for non-multi-repo machines).
 - [ ] Approve installer design and separate implementation scope.
 - [ ] Curate optional team skills; reconcile strict TDD defaults and other conflicting mandatory procedures before adoption.
 - [ ] Approve isolated behavioral evaluations and record outcomes for every claimed supported adapter.

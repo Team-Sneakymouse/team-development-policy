@@ -4,41 +4,42 @@ Specification only. No installer or runnable install commands exist yet.
 
 ## Contract
 
-Input: an explicitly approved immutable policy revision; selected agent(s), project(s), OS, and (for Hermes) profile. Default mode should be dry-run. Installing a reviewed-but-unapproved revision must fail unless a separate isolated evaluation mode is explicitly selected; evaluation must never write to active profiles or real projects.
+Input: selected agent(s), project(s), OS, and (for Hermes) profile; enrollment mode (default: sibling-checkout pointer). Default mode should be dry-run. Evaluation must never write to active profiles or real projects without explicit consent.
 
-No network execution pipes, implicit latest-version updates, credentials distribution, permission changes, or silent memory writes.
+No network execution pipes that bypass the developer's Git credentials, credentials distribution, permission changes, or silent memory writes.
 
-### Source of truth after install
+### Source of truth after enrollment (sibling-checkout)
 
-The installer copies from the approved upstream revision into the project `.team-policy/` payload and records revision id plus file hashes in `manifest.json`. After a successful install or update:
+The installer writes `.team-policy/pointer.json` and a managed bootstrap block. Agents then:
 
-- Agents read only the enrolled payload on disk.
-- Upstream remains the input for the next explicit update, not a live overlay.
-- Hash or revision mismatch between manifest and payload files is a hard failure for discovery (report; do not auto-repair from network).
+1. Resolve a local checkout from `local_candidates` or clone `remote`.
+2. Fast-forward `track_branch` when behind and safe.
+3. Read policy documents from that checkout.
+
+A committed file-snapshot payload (schema v1) remains an optional alternate for environments without a shared multi-repo folder.
 
 ## Proposed flow
 
-1. **Resolve:** authenticate through the developer's existing Git credentials for this private repo. Fetch an immutable approved commit and verify its approval record and file hashes. Hashes establish integrity, not approval; the approval authority and release-signing approach are still decisions to make.
-2. **Detect:** identify agent/version/OS, project root, current instructions, overrides, managed controls, and available native mechanisms. Unsupported targets receive a blocker, not a guessed path.
-3. **Plan:** display every target, modification, selected revision, existing-rule conflict, and backup. Ask for explicit write consent; plan mode never writes to active profiles or real projects.
-4. **Materialize:** stage the project `.team-policy/` payload and optional user-local cache. Generated files identify source revision, managed block ownership, and approval status. Keep global enrollments limited to opted-in projects.
+1. **Resolve:** authenticate through the developer's existing Git credentials for this private repo. Confirm the track branch or pinned ref exists.
+2. **Detect:** identify agent/version/OS, project root, current instructions, overrides, managed controls, available native mechanisms, and whether a sibling policy checkout already exists. Unsupported targets receive a blocker, not a guessed path.
+3. **Plan:** display every target, bootstrap/pointer modification, candidate paths, and existing-rule conflict. Ask for explicit write consent; plan mode never writes to active profiles or real projects.
+4. **Materialize pointer:** write `.team-policy/pointer.json` (schema v2). Optionally ensure the first `local_candidates` path is a clone of this repo. Do not copy the full policy tree into the plugin by default.
 5. **Integrate:** add a managed bootstrap block to native instruction files, preserving all unrelated content. Refuse ambiguous edits. Local project facts stay outside managed policy. Conversational memory, if supported, may store a discovery pointer but is not the source of truth.
-6. **Commit locally where requested:** present the diff; a project snapshot/bootstrap commit requires explicit agreement. Do not auto-commit unrelated files or push/modify plugin repositories as part of installation without authorization.
-7. **Verify:** inspect written files and launch a fresh agent session in an isolated test project. Confirm policy revision, actual discovery, and scoped task behavior. Report file materialization separately from product-level validation.
+6. **Commit locally where requested:** present the diff; a pointer/bootstrap commit requires explicit agreement. Do not auto-commit unrelated files or push/modify plugin repositories as part of installation without authorization.
+7. **Verify:** confirm pointer + bootstrap presence; in a fresh agent session, confirm the agent resolves the checkout, can read `policy/core.md`, and follows a scoped task. Report file materialization separately from product-level validation.
 
 ## State, update, rollback
 
-Manifest should include source repo, immutable revision, approval reference, adapter/version, project root, selected profile if applicable, installed file hashes, and managed-block identifiers. Avoid machine-specific paths in committed portable manifests; store machine-local resolution separately.
+Pointer should include schema version, mode, source repo, remote, track branch (or pinned ref), and local candidate paths. Avoid machine-specific absolute paths in committed pointers; resolution is relative to the project root.
 
-- Reinstalling the same revision is idempotent.
-- Updates are explicit, show a diff, preserve user edits, and never switch to latest silently.
-- Abort or require a reviewed merge if owned content changed locally.
-- Roll back using recorded snapshots. Uninstall removes only unchanged installer-owned content; modified content is preserved with a report.
-- Stage and validate before writes; multi-file failure must restore the prior state or clearly report partial failure with recovery steps.
-- Keep secret material out of manifests/backups and never overwrite other Hermes profiles.
+- Re-running enrollment with the same pointer is idempotent.
+- Policy content updates happen by pulling the sibling checkout (or changing track/pin), not by rewriting copied files in every plugin.
+- Abort or require a reviewed merge if the managed bootstrap block changed locally.
+- Uninstall removes only unchanged installer-owned bootstrap/pointer content; modified content is preserved with a report.
+- Keep secret material out of pointers/backups and never overwrite other Hermes profiles.
 
 ## Future isolated acceptance tests
 
-Clean install; idempotency; existing instruction preservation; shadowing override detection; unknown agent version; missing approval; no credentials; inaccessible private repo; changed managed block; stale revision; interrupted multi-file write; rollback; uninstall preservation; fresh-session discovery; Windows/macOS/Linux paths once the team selects targets.
+Missing sibling → clone; already present → no duplicate clone; behind track branch → fast-forward; dirty policy checkout → report/ask; shadowing override detection; unknown agent version; no credentials; inaccessible private repo; fresh-session discovery; Windows/macOS/Linux paths once the team selects targets.
 
 These are proposed tests, not completed test results. Installer implementation starts only after design review.
