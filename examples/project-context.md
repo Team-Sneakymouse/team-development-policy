@@ -10,6 +10,7 @@ Shared policy: <approved immutable revision; installer-managed bootstrap>
 Build/test commands: <read from actual project tooling>
 Runtime targets: <Paper/Minecraft/Java versions from this repo>
 Architecture: <thread ownership, persistence, integration constraints>
+Shared Paper utils: SneakyUtils compileOnly + runtime depend (see team policy sneakyutils.md)
 Local exceptions: <specific rule, rationale, approver, scope>
 Deployment behavior: <which pushes/workflows publish or deploy>
 ```

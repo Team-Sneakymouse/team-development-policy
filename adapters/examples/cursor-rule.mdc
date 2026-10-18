@@ -5,4 +5,4 @@ alwaysApply: true
 
 This example is outside `.cursor/rules/` and must not be installed yet.
 
-Candidate body after approval: read the project-root `.team-policy/manifest.json`, `.team-policy/policy/core.md`, `.team-policy/policy/scope-and-testing.md`, and `.team-policy/workflows/development.md` before acting. Do not treat changed source files as an automatic requirement for new test implementation. Surface instruction conflicts or missing policy. Keep existing local project rules intact.
+Candidate body after approval: read the project-root `.team-policy/manifest.json`, `.team-policy/policy/core.md`, `.team-policy/policy/scope-and-testing.md`, `.team-policy/policy/sneakyutils.md` when adding or sharing Paper util/manager code, and `.team-policy/workflows/development.md` before acting. Do not treat changed source files as an automatic requirement for new test implementation. Surface instruction conflicts or missing policy. Keep existing local project rules intact.
