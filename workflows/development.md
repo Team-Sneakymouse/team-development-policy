@@ -1,7 +1,5 @@
 # Agent-assisted development lifecycle (ADLC)
 
-**UNAPPROVED DRAFT — proposed workflow, not active instructions.**
-
 Stages are thinking checkpoints, not mandatory artifacts or separate agents.
 
 1. **Understand:** identify the request, repository, local constraints, authorization, and acceptance criteria. Investigation-only tasks end with findings.

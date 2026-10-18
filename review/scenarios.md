@@ -1,6 +1,6 @@
 # Review scenarios
 
-**UNAPPROVED DRAFT — acceptance cases, not claims of executed agent tests.**
+Acceptance cases for planned evaluation; not claims of executed agent tests.
 
 Run with each adapter in a fresh isolated session after an approved evaluation plan. Record product/model/version/OS, loaded revision, actual actions, and pass/fail. Passing once is behavioral evidence, not a guarantee of future compliance.
 

@@ -1,6 +1,6 @@
 # Candidate per-project context
 
-**UNAPPROVED DRAFT — example only, not active AGENTS.md.**
+Example only; not an active `AGENTS.md`.
 
 A project's native context file should retain local facts alongside an installer-managed bootstrap:
 

@@ -1,7 +1,5 @@
 # Approval and rollout checklist
 
-**UNAPPROVED DRAFT — no adoption authorized.**
-
 - [ ] Team approves core policy, risk tiers, scope exceptions, and conflict handling.
 - [ ] Identify policy maintainers/reviewers and how approval of immutable revisions is recorded.
 - [ ] Select licensing before importing skills or external redistribution.
@@ -15,4 +13,4 @@
 - [ ] Replace conflicting per-repo rules deliberately; do not silently propagate policy.
 - [ ] Approve an immutable release and only then permit installation/update.
 
-Potential pilot: EmptyPlugin plus one existing plugin, after separate approval. This draft does not change either. A draft PR review or merge alone is not an installation authorization.
+Potential pilot: EmptyPlugin plus one existing plugin, after separate approval. This repository does not change either. A PR merge alone is not an installation authorization.

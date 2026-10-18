@@ -1,6 +1,6 @@
 # Agent adapters
 
-**UNAPPROVED DRAFT — examples only; no files here are installed.**
+Examples only; no files here are installed.
 
 Adapters translate discovery, not policy meaning. All agents should load the same pinned policy documents plus local project facts. The proposed project payload is `.team-policy/` with a revision manifest, core/testing policy, workflow, and selected optional skills. Whether this payload is committed is an approval decision; the default proposal is a committed project snapshot for reproducibility.
 
@@ -20,7 +20,7 @@ Candidate: project `.cursor/rules/team-policy.mdc` with `alwaysApply: true` to l
 
 ## Claude Code
 
-Candidate: project `CLAUDE.md` containing explicit read instructions for the project payload and local facts. Native import syntax and user-level discovery need verification on selected versions; the adapter does not depend on an assumed cross-agent import syntax. Official memory documentation could not be retrieved in this draft environment (HTTP 403). This mapping is provisional; no Claude Code runtime validation has occurred.
+Candidate: project `CLAUDE.md` containing explicit read instructions for the project payload and local facts. Native import syntax and user-level discovery need verification on selected versions; the adapter does not depend on an assumed cross-agent import syntax. Official memory documentation could not be retrieved during authoring (HTTP 403). This mapping is provisional; no Claude Code runtime validation has occurred.
 
 ## Antigravity
 
@@ -36,9 +36,9 @@ Provide the [plain bootstrap example](examples/bootstrap.md) as candidate conten
 
 ## Sources and limits
 
-- [Hermes context files](https://hermes-agent.nousresearch.com/docs/user-guide/features/context-files): retrieved for this draft; use live docs rather than older local skill summaries.
-- [Codex AGENTS.md](https://developers.openai.com/codex/guides/agents-md): retrieved for this draft.
-- [Cursor rules](https://cursor.com/docs/context/rules): retrieved for this draft.
+- [Hermes context files](https://hermes-agent.nousresearch.com/docs/user-guide/features/context-files): retrieved during authoring; use live docs rather than older local skill summaries.
+- [Codex AGENTS.md](https://developers.openai.com/codex/guides/agents-md): retrieved during authoring.
+- [Cursor rules](https://cursor.com/docs/context/rules): retrieved during authoring.
 - [Claude Code memory](https://code.claude.com/docs/en/memory): retrieval blocked; validation pending.
 - [Antigravity rules/workflows](https://antigravity.google/docs/rules-workflows): usable content unavailable; validation pending.
 

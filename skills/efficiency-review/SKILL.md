@@ -4,12 +4,12 @@ description: "Use when reviewing runtime efficiency or hot paths. Assess Minecra
 version: 0.1.0
 author: Team-Sneakymouse
 metadata:
-  status: unapproved-draft
+  status: optional
 ---
 
 # Efficiency review
 
-**UNAPPROVED DRAFT — review material only. Do not install or adopt.**
+Optional skill; not installed by this repository.
 
 ## Overview
 

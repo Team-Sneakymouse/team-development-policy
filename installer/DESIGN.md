@@ -1,10 +1,10 @@
 # Installation design
 
-**UNAPPROVED DRAFT — specification only. No installer or runnable install commands exist.**
+Specification only. No installer or runnable install commands exist yet.
 
 ## Contract
 
-Input: an explicitly approved immutable policy revision; selected agent(s), project(s), OS, and (for Hermes) profile. Default mode should be dry-run. Installing a reviewed-but-unapproved draft must fail unless a separate isolated evaluation mode is explicitly selected; evaluation must never write to active profiles or real projects.
+Input: an explicitly approved immutable policy revision; selected agent(s), project(s), OS, and (for Hermes) profile. Default mode should be dry-run. Installing a reviewed-but-unapproved revision must fail unless a separate isolated evaluation mode is explicitly selected; evaluation must never write to active profiles or real projects.
 
 No network execution pipes, implicit latest-version updates, credentials distribution, permission changes, or silent memory writes.
 
@@ -12,8 +12,8 @@ No network execution pipes, implicit latest-version updates, credentials distrib
 
 1. **Resolve:** authenticate through the developer's existing Git credentials for this private repo. Fetch an immutable approved commit and verify its approval record and file hashes. Hashes establish integrity, not approval; the approval authority and release-signing approach are still decisions to make.
 2. **Detect:** identify agent/version/OS, project root, current instructions, overrides, managed controls, and available native mechanisms. Unsupported targets receive a blocker, not a guessed path.
-3. **Plan:** display every target, modification, selected revision, existing-rule conflict, and backup. Ask for explicit write consent; no active writes occur during this first-draft effort.
-4. **Materialize:** stage the project `.team-policy/` payload and optional user-local cache. Generated files identify source revision, managed block ownership, and draft/approved status. Keep global enrollments limited to opted-in projects.
+3. **Plan:** display every target, modification, selected revision, existing-rule conflict, and backup. Ask for explicit write consent; plan mode never writes to active profiles or real projects.
+4. **Materialize:** stage the project `.team-policy/` payload and optional user-local cache. Generated files identify source revision, managed block ownership, and approval status. Keep global enrollments limited to opted-in projects.
 5. **Integrate:** add a managed bootstrap block to native instruction files, preserving all unrelated content. Refuse ambiguous edits. Local project facts stay outside managed policy. Conversational memory, if supported, may store a discovery pointer but is not the source of truth.
 6. **Commit locally where requested:** present the diff; a project snapshot/bootstrap commit requires explicit agreement. Do not auto-commit unrelated files or push/modify plugin repositories as part of installation without authorization.
 7. **Verify:** inspect written files and launch a fresh agent session in an isolated test project. Confirm policy revision, actual discovery, and scoped task behavior. Report file materialization separately from product-level validation.

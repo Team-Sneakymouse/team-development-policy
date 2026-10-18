@@ -1,7 +1,5 @@
 # Core policy
 
-**UNAPPROVED DRAFT — proposed rules, not active instructions.**
-
 ## Scope and authorization
 
 - Treat investigation requests as read-only. Do not turn an explanation into an implementation.
