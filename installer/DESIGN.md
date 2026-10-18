@@ -8,6 +8,14 @@ Input: an explicitly approved immutable policy revision; selected agent(s), proj
 
 No network execution pipes, implicit latest-version updates, credentials distribution, permission changes, or silent memory writes.
 
+### Source of truth after install
+
+The installer copies from the approved upstream revision into the project `.team-policy/` payload and records revision id plus file hashes in `manifest.json`. After a successful install or update:
+
+- Agents read only the enrolled payload on disk.
+- Upstream remains the input for the next explicit update, not a live overlay.
+- Hash or revision mismatch between manifest and payload files is a hard failure for discovery (report; do not auto-repair from network).
+
 ## Proposed flow
 
 1. **Resolve:** authenticate through the developer's existing Git credentials for this private repo. Fetch an immutable approved commit and verify its approval record and file hashes. Hashes establish integrity, not approval; the approval authority and release-signing approach are still decisions to make.
