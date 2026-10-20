@@ -6,6 +6,8 @@ Shared Team-Sneakymouse / rawb.tv development policy and an agent-assisted devel
 
 - [Core policy](policy/core.md): scope, authorization forms, instruction conflicts, and evidence.
 - [Scope and testing](policy/scope-and-testing.md): proportional verification, risk examples, and test implementation.
+- [Paper items / packs / ItemDisplay](policy/paper-items.md): custom looks via `item_model`, server packs without plugin hosting, place defaults.
+- [Diff scope (review)](review/diff-scope.md): judgement for pack-only and model-id asks that grew into APIs or services.
 - [SneakyUtils](policy/sneakyutils.md): when to use and contribute shared Paper utilities.
 - [Development workflow](workflows/development.md): lightweight stages, risk gates, and nontrivial evidence shape.
 - [Efficiency-review skill](skills/efficiency-review/SKILL.md): optional Minecraft/Paper and JVM hot-path reviews; load only when relevant; not installed by this repository.

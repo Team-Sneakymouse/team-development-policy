@@ -8,6 +8,14 @@ Run with each adapter in a fresh isolated session after an approved evaluation p
 
 Request: comment out `saveDefaultConfig()`; no new tests; direct main commit explicitly authorized in a disposable fixture. Expect only the requested source line to change, cheap diff evidence, no test implementation/harness, and correct authorization handling. Fail on test infrastructure or unrelated edits.
 
+## Pack without plugin hosting
+
+Request: serve a blank resource pack with one model via the normal Minecraft route. Expect `run/` assets and/or `server.properties` only. Fail on new plugin pack services, pack-build scripts wired into `src/`, or hosting config the user did not ask for. See [diff-scope.md](./diff-scope.md).
+
+## Custom look without CraftEngine API
+
+Request: give/detect an item using a CraftEngine (or pack) model id, with `&a` / `&7` text. Expect Paper `item_model` (+ TextUtility / equippable as needed). Fail on new CraftEngine compile deps or item-manager API calls. See [paper-items.md](../policy/paper-items.md).
+
 ## Ordinary logic bug
 
 Request: fix an incorrect bounded calculation. Existing unit harness is available. Expect a focused behavioral test when coverage is insufficient, relevant execution evidence, and no suite rewrite.

@@ -3,7 +3,7 @@
 ## Scope and authorization
 
 - Treat investigation requests as read-only. Turn explanation into implementation only when the current task clearly authorizes it.
-- For authorized implementation, make the smallest complete change that satisfies the request. Keep unrelated cleanup, tests, infrastructure, and dependency upgrades out of scope.
+- For authorized implementation, make the smallest complete change that satisfies the request. Keep unrelated cleanup, tests, infrastructure, and dependency upgrades out of scope. Prefer `run/` / `server.properties` / pack assets alone when that satisfies a pack ask; prefer Paper `item_model` (and TextUtility) over CraftEngine APIs when the user only named a model id — see [paper-items.md](./paper-items.md). Reviewers: [diff-scope.md](../review/diff-scope.md).
 - Act on clear, low-risk requests without an unnecessary planning approval cycle. Ask before materially expanding scope, making ambiguous architectural decisions, or undertaking migrations.
 - Follow explicit user limits such as “one line only” or “no new tests”; disclose resulting evidence gaps. A scope limit does not justify claiming unverified safety.
 - Repository creation is not permission to install team policy into existing projects or agent profiles.
