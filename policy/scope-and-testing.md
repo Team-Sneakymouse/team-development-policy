@@ -29,6 +29,19 @@ When unsure between ordinary and high, classify high and ask for assurance scope
 
 For a substantial feature, broad change, or repeated maintenance issue, review whether responsibilities and lifecycle boundaries remain understandable. Large diffs, long files, and repeated patterns are **signals to inspect**, not automatic defects or fixed thresholds. Keep a feature split as small as practical, but do not introduce abstractions or refactors without a concrete maintenance benefit. For Paper-specific prompts, see [Paper plugin maintainability](./paper-plugin-maintainability.md).
 
+## Runtime efficiency prompts
+
+When a change touches a hot path or runtime efficiency is part of the request, proactively check the relevant points below during implementation and self-review. Triggers include frequent events, low-interval tasks, entity/block or display workloads, I/O, and large collections. Keep the review scoped to affected paths; this is not a repository-wide audit for unrelated small edits. The [efficiency-review skill](../skills/efficiency-review/SKILL.md) has the full procedure and Minecraft/Paper/JVM checklist.
+
+- Trace how often the work runs, how many instances/items/viewers it reaches, nested scans, startup bursts, and which thread owns it. Estimate the combined cost instead of judging a loop in isolation.
+- Check scaling, repeated backend/API work, temporary allocations, expensive repeated computation, and unbounded retained state or queues.
+- For Paper, inspect entity query traversal, chunk/block side effects, display/render and packet fan-out, and platform thread ownership. Verify implementation details against the deployed version when API behavior affects the cost.
+- Keep blocking I/O off the owning/tick thread. Off-thread work still needs bounded queues/concurrency and safe state handoff; fence stale results before applying them.
+- Prefer event-driven updates, batching, reuse, or caching only when semantics allow and ownership, invalidation, bounds, and lifecycle cleanup are clear. Preserve behavior and responsiveness.
+- Separate measured bottlenecks, source-backed scaling risks, and hypotheses. State unknown workload bounds; do not invent impact or optimization percentages. Recommend measurement when evidence is insufficient, and do not provision infrastructure or run disruptive load tests without approval.
+
+For ordinary changes with no relevant runtime trigger, no extra efficiency audit is expected. Review-only requests produce findings and recommendations, not automatic implementation.
+
 ## Separate two decisions
 
 1. **Implement tests?** Identify the behavior and coverage gap. Reuse existing coverage when sufficient; do not add redundant assertions merely because production code changed.
