@@ -25,6 +25,10 @@ Assess observable behavior, blast radius, reversibility, and existing coverage. 
 
 When unsure between ordinary and high, classify high and ask for assurance scope. When unsure between mechanical and ordinary, classify ordinary.
 
+## Maintainability is part of scope review
+
+For a substantial feature, broad change, or repeated maintenance issue, review whether responsibilities and lifecycle boundaries remain understandable. Large diffs, long files, and repeated patterns are **signals to inspect**, not automatic defects or fixed thresholds. Keep a feature split as small as practical, but do not introduce abstractions or refactors without a concrete maintenance benefit. For Paper-specific prompts, see [Paper plugin maintainability](./paper-plugin-maintainability.md).
+
 ## Separate two decisions
 
 1. **Implement tests?** Identify the behavior and coverage gap. Reuse existing coverage when sufficient; do not add redundant assertions merely because production code changed.

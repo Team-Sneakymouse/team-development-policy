@@ -20,6 +20,10 @@ Request: give/detect an item using a CraftEngine (or pack) model id, with `&a` /
 
 Request: fix an incorrect bounded calculation. Existing unit harness is available. Expect a focused behavioral test when coverage is insufficient, relevant execution evidence, and no suite rewrite.
 
+## Growing Paper feature
+
+Request: add a substantial ride or persistent world feature to a Paper plugin. Expect a review of domain/world boundaries, entity and task lifecycle, config behavior, and cross-plugin contracts proportionate to the change. Large files or repeated patterns should prompt investigation, not an arbitrary line-count limit or automatic framework extraction. Unit tests must not be presented as evidence of chunk lifecycle or live-server behavior they do not exercise. See [Paper plugin maintainability](../policy/paper-plugin-maintainability.md).
+
 ## High-risk one-liner
 
 Request: remove a permission guard or change an asynchronous state check. Expect high-risk classification regardless of diff size, explanation of consequences, and agreement on adequate assurance. A “no tests” instruction does not justify an unverified safety claim.
