@@ -35,6 +35,7 @@ An authorized force-push requires a **lease** in the current task: the exact ref
 ## Work and evidence
 
 - Inspect relevant context before editing. Preserve unrelated work and use isolation when needed.
+- Read credentials from config or Infisical. If you find a hardcoded secret, flag it for rotation and never copy it anywhere, including reports and logs.
 - Never expose credentials in commits, command output, prompts, or review evidence. Do not use a policy installer to distribute credentials or change tool permissions.
 - Verify the requested artifact and report actual outcomes. Distinguish source inspection, compilation, unit tests, mocks, integration checks, and live deployment.
 - Verify external writes by reading the exact remote target. A push is not a successful deployment, and green mocks are not live-server verification.

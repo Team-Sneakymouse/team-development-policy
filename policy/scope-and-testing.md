@@ -47,7 +47,7 @@ For ordinary changes with no relevant runtime trigger, no extra efficiency audit
 1. **Implement tests?** Identify the behavior and coverage gap. Reuse existing coverage when sufficient; do not add redundant assertions merely because production code changed.
 2. **Run checks?** Select existing tests, build, static checks, or integration checks relevant to the risk. Running existing tests does not imply permission to implement new test infrastructure.
 
-New logic and reproducible bugs normally merit focused tests. Where feasible, demonstrate that a new regression test catches the bug before applying the fix. TDD is a useful method, not a universal condition for editing source code.
+New logic and reproducible bugs normally merit focused tests. When touching scoring, parsing, pricing or timing logic, extract it into pure Kotlin and add a unit test. Where feasible, demonstrate that a new regression test catches the bug before applying the fix. TDD is a useful method, not a universal condition for editing source code.
 
 ## Scope boundaries
 
