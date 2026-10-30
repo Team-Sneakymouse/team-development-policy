@@ -10,9 +10,17 @@ When editing a Team-Sneakymouse Paper plugin:
 2. Depend with `compileOnly("io.github.team-sneakymouse:sneakyutils:<published-version>")` from `https://maven.sneakyrp.com/releases`. Resolve the version from Maven metadata or an existing peer plugin — do not invent coordinates.
 3. Declare a server load-before / `depend` on plugin `SneakyUtils` so classes and manager memory exist at runtime.
 4. Keep domain-specific helpers in the consumer. Thin wrappers that call SneakyUtils and add plugin-only behavior are fine; duplicated TextUtility/ChatUtility/InventoryUtility implementations are not.
-5. For MagicsSpells temporary blocks and related undo, use `SneakyUtils.getAlteredBlockManager()` (or MagicsSpells’ facade that delegates to it). Do not reintroduce a second in-plugin altered-block manager.
+5. Any plugin that causes block damage must use `SneakyUtils.getAlteredBlockManager()` for shared tracking and restoration. This is not limited to MagicSpells or spells; a facade is acceptable only when it delegates to the same shared manager. See [block damage and restoration](#block-damage-and-restoration).
 
 Done when: the consumer builds against a published artifact, declares the runtime dependency, and has no fresh duplicate of a shared util already in SneakyUtils.
+
+## Block damage and restoration
+
+Route all plugin-caused block damage (including destruction, removal, and damaging replacements) through SneakyUtils' shared `com.sneakyutils.util.AlteredBlockManager`, accessed via `SneakyUtils.getAlteredBlockManager()`. Do not instantiate a private manager, keep a competing original-state/undo store, or perform untracked damage through direct block writes, explosions, or external editing APIs.
+
+Use the manager's `apply(internalName, block, newDataOrMaterial, applyPhysics)` when it performs the change: it captures the current block data and state, applies the replacement, and registers a reversible change. If an external API performs the edit, capture the original `BlockData` and `BlockState` **before** mutation, then register that change with `register(internalName, block, fromData, fromState)`; `register` itself does not mutate the world. Event-driven damage must also be controlled so affected blocks are tracked, rather than allowing an untracked vanilla destruction path.
+
+Keep mutations and manager access on the server thread. Use feature-specific internal names and the shared `Change.undo(applyPhysics)` / `undoAll(internalName, applyPhysics)` APIs for restoration; consumer cleanup must not call global `restoreAll()` and undo unrelated plugins' changes. Preserve the shared marker/PDC recovery mechanism rather than replacing it with consumer-only timers or snapshots. Verify the required block-state recovery behavior against the actual manager support; do not assume every tile-state field is persisted.
 
 ## Player-facing character names
 
