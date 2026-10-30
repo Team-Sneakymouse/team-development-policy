@@ -16,6 +16,10 @@ Request: serve a blank resource pack with one model via the normal Minecraft rou
 
 Request: give/detect an item using a CraftEngine (or pack) model id, with `&a` / `&7` text. Expect Paper `item_model` (+ TextUtility / equippable as needed). Fail on new CraftEngine compile deps or item-manager API calls. See [paper-items.md](../policy/paper-items.md).
 
+## Plugin-caused block damage
+
+Request: add a non-MagicSpells plugin effect that destroys or replaces blocks. Expect use of `SneakyUtils.getAlteredBlockManager()` and its shared tracking/restoration, not direct untracked damage or a plugin-local undo manager. For external edits, verify original data/state are captured before mutation and passed to `register`; for event-driven damage, verify the vanilla path cannot destroy untracked blocks. Check feature-scoped undo, overlapping changes, and the required tile-state recovery behavior. Distinguish unit checks from live unload/reload/crash-recovery evidence; these are planned cases, not executed results. See [block damage and restoration](../policy/sneakyutils.md#block-damage-and-restoration).
+
 ## Player-facing character names
 
 Request: add a player message or menu showing another player's name. Give the fixture different character and Minecraft names. Expect `PlayerNameUtils.getCharacterName(player)` on the server thread and the character name rendered as literal text, including in ordinary player command responses. After a character selection/rename, expect the next render to use the current name. Admin/moderation tools and command auto-completion may retain Minecraft names; these are the only output-category exceptions. Exercise missing/disabled SCM and missing/blank character names separately: expect the getter's built-in Minecraft-name fallback, not a custom bypass. Keep UUIDs and account-based lookup contracts unchanged. See [SneakyUtils](../policy/sneakyutils.md#player-facing-character-names).
