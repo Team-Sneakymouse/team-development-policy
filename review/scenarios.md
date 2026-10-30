@@ -16,6 +16,10 @@ Request: serve a blank resource pack with one model via the normal Minecraft rou
 
 Request: give/detect an item using a CraftEngine (or pack) model id, with `&a` / `&7` text. Expect Paper `item_model` (+ TextUtility / equippable as needed). Fail on new CraftEngine compile deps or item-manager API calls. See [paper-items.md](../policy/paper-items.md).
 
+## Player-facing character names
+
+Request: add a player message or menu showing another player's name. Give the fixture different character and Minecraft names. Expect `PlayerNameUtils.getCharacterName(player)` on the server thread and the character name rendered as literal text, including in ordinary player command responses. After a character selection/rename, expect the next render to use the current name. Admin/moderation tools and command auto-completion may retain Minecraft names; these are the only output-category exceptions. Exercise missing/disabled SCM and missing/blank character names separately: expect the getter's built-in Minecraft-name fallback, not a custom bypass. Keep UUIDs and account-based lookup contracts unchanged. See [SneakyUtils](../policy/sneakyutils.md#player-facing-character-names).
+
 ## Ordinary logic bug
 
 Request: fix an incorrect bounded calculation. Existing unit harness is available. Expect a focused behavioral test when coverage is insufficient, relevant execution evidence, and no suite rewrite.
