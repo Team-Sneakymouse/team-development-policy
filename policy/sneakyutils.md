@@ -26,11 +26,23 @@ Keep mutations and manager access on the server thread. Use feature-specific int
 
 All player-facing names identifying players (messages, menus, labels, scoreboards, and similar output) must use character names instead of Minecraft account names. The only exceptions are **admin/moderation tools** and **command auto-completion**, which may use Minecraft names. An ordinary player command's response is still player-facing output; the completion exception does not extend to that response.
 
-Use `com.sneakyutils.util.PlayerNameUtils.getCharacterName(player)` rather than `player.getName()` / `player.name`, a local SCM bridge, or a PlaceholderAPI workaround. Call it on the **server thread**; capture the returned string there before any asynchronous work that needs it. Insert the result as literal text, not as MiniMessage or placeholder input.
+Use `com.sneakyutils.util.PlayerUtil.getCharacterName(player)` rather than `player.getName()` / `player.name`, a local SCM bridge, or a PlaceholderAPI workaround. Call it on the **server thread**; capture the returned string there before any asynchronous work that needs it. Insert the result as literal text, not as MiniMessage or placeholder input.
 
-The getter reads the current character name without caching, strips angle-bracket tags and legacy/hex formatting, and returns plain text (not the display name's prefix/title/gender suffix). Its built-in fallback is the Minecraft name when SCM is absent, disabled, incompatible, or has no usable character/name after sanitization. This is the shared getter's availability fallback, not permission to bypass it for ordinary player-facing output. No new SCM or PlaceholderAPI dependency is required; retain the consumer's normal SneakyUtils runtime dependency and use a published version containing the getter.
+The player-facing naming rule and its two exceptions are unchanged. The API now lives in `PlayerUtil`; the old `PlayerNameUtils` class was removed, so consumers must update imports/class references and recompile against a matching published SneakyUtils version.
 
-Getter contract checked against [SneakyUtils `2d747d631c740f9bf5478086a182a510391b1a9b`](https://github.com/Team-Sneakymouse/SneakyUtils/blob/2d747d631c740f9bf5478086a182a510391b1a9b/src/main/kotlin/com/sneakyutils/util/PlayerNameUtils.kt). Character names are presentation, not stable identifiers; do not replace UUIDs or account-based lookup contracts with character-name keys.
+The getter reads SCM's current `%sneakycharacters_character_name_noformat%` output through optional PlaceholderAPI. It preserves provider output exactly: no local stripping, trimming, formatting repairs, or recursive placeholder expansion. It uses the character name, not the display name's prefix/title/gender suffix. When SCM/PAPI is absent or disabled, or the result is blank/unresolved, it falls back to the Minecraft name. This availability fallback is not permission to bypass the getter for ordinary player-facing output. Consumers retain their normal SneakyUtils dependency; SneakyUtils owns the optional joined-classpath PAPI integration. Do not add a reverse dependency on SCM or duplicate its integration in consumers.
+
+Player helper contracts checked against [SneakyUtils PR #7 at `e7e795ef3f4fa9cbccdb8f766e2a31aed68ad238`](https://github.com/Team-Sneakymouse/SneakyUtils/blob/e7e795ef3f4fa9cbccdb8f766e2a31aed68ad238/src/main/kotlin/com/sneakyutils/util/PlayerUtil.kt). Character names are presentation, not stable identifiers; do not replace UUIDs or account-based lookup contracts with character-name keys. `PlayerUtil.getPlayerExact` and `getPlayer` retain Bukkit's Minecraft-account-name lookup semantics; they do not resolve character names.
+
+## Player eligibility for targeted and random effects
+
+Plugins must use `com.sneakyutils.util.PlayerUtil.canTarget(player)` to determine whether a player may be affected by **targeted or random effects**. Filter random candidate pools with this helper and check explicit targets too; do not duplicate the shared game-mode/vanish logic in each plugin. Call on the **server thread**. Recheck eligibility before applying delayed effects so a later game-mode or vanish change is respected. Feature-specific checks (range, permissions, world, alive/online state, etc.) remain additional requirements, not replacements for this gate.
+
+- `canTarget(player)` defaults to excluding Creative. Survival and Adventure are eligible.
+- `canTarget(player, true)` explicitly allows Creative; Spectator is always excluded.
+- A resolved, nonempty `%cmi_user_vanished_symbol%` excludes the player. This is a symbol, not a boolean: whitespace and the literal `false` are nonempty and therefore exclude.
+- Missing/disabled PAPI, an unavailable expansion, or an unresolved response does **not** establish vanish: this check fails open while game-mode restrictions still apply. Do not claim the helper guarantees vanish protection without the working integration.
+- The helper does not check dead/offline state, permissions, or viewer-specific visibility. Enforce any such requirements separately.
 
 ## Contribute (expanding the shared plugin)
 
