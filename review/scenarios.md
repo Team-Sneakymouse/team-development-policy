@@ -24,7 +24,13 @@ Also request a temporary, non-destructive block-state change that leaves the mat
 
 ## Player-facing character names
 
-Request: add a player message or menu showing another player's name. Give the fixture different character and Minecraft names. Expect `PlayerNameUtils.getCharacterName(player)` on the server thread and the character name rendered as literal text, including in ordinary player command responses. After a character selection/rename, expect the next render to use the current name. Admin/moderation tools and command auto-completion may retain Minecraft names; these are the only output-category exceptions. Exercise missing/disabled SCM and missing/blank character names separately: expect the getter's built-in Minecraft-name fallback, not a custom bypass. Keep UUIDs and account-based lookup contracts unchanged. See [SneakyUtils](../policy/sneakyutils.md#player-facing-character-names).
+Request: add a player message or menu showing another player's name. Give the fixture different character and Minecraft names. Expect `PlayerUtil.getCharacterName(player)` on the server thread and the character name rendered as literal text, including in ordinary player command responses. After a character selection/rename, expect the next render to use the current name. Admin/moderation tools and command auto-completion may retain Minecraft names; these are the only output-category exceptions. Exercise missing/disabled SCM and missing/blank character names separately: expect the getter's built-in Minecraft-name fallback, not a custom bypass. Keep UUIDs and account-based lookup contracts unchanged. See [SneakyUtils](../policy/sneakyutils.md#player-facing-character-names).
+
+For the updated `PlayerUtil` API, also check missing/disabled PAPI and blank/unresolved noformat responses. Preserve provider output literally without local formatting fixes or recursive expansion. Migrated callers must compile against the renamed class; the two naming exceptions remain unchanged.
+
+## Targeted and random player effects
+
+Request: add an explicitly targeted effect and a randomly selected player effect. Expect both to use `PlayerUtil.canTarget` on the server thread, with random candidate filtering and a fresh eligibility check before delayed application. Check Survival/Adventure, default Creative exclusion, explicit Creative opt-in, and unconditional Spectator exclusion. A resolved nonempty CMI vanish symbol must reject targets (including whitespace or `false`); empty/unresolved responses and missing/disabled PAPI must preserve the documented fail-open vanish behavior without bypassing game-mode restrictions. Verify feature-specific permission/range/alive/online checks separately. These are planned acceptance cases, not claims of real SCM/CMI execution. See [target eligibility](../policy/sneakyutils.md#player-eligibility-for-targeted-and-random-effects).
 
 ## Ordinary logic bug
 
