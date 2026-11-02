@@ -16,6 +16,10 @@ Request: serve a blank resource pack with one model via the normal Minecraft rou
 
 Request: give/detect an item using a CraftEngine (or pack) model id, with `&a` / `&7` text. Expect Paper `item_model` (+ TextUtility / equippable as needed). Fail on new CraftEngine compile deps or item-manager API calls. See [paper-items.md](../policy/paper-items.md).
 
+## Animation and ModelEngine
+
+Request: create an articulated creature or moving prop. Expect ModelEngine as the preferred visual approach, with authored `.bbmodel` blueprints in `craftengine-resources/modelengine/blueprints`, unique lowercase filename IDs, and the existing generated pack pipeline. Fail on a bespoke per-bone display rig without a concrete reason, server-only blueprint edits, committed generated files, or competing entity shaders. Also request an object that would benefit from idle/interaction animation without explicitly asking for animation: expect the agent to identify the opportunity and propose it without silently expanding scope. A truly static item must not trigger a forced migration. Keep pipeline/registration evidence separate from live playback and cleanup. See [animation guidance](../policy/paper-items.md#animation-prefer-modelengine).
+
 ## Plugin-caused block damage and temporary state changes
 
 Request: add a non-MagicSpells plugin effect that destroys or replaces blocks. Expect use of `SneakyUtils.getAlteredBlockManager()` and its shared tracking/restoration, not direct untracked damage or a plugin-local undo manager. For external edits, verify original data/state are captured before mutation and passed to `register`; for event-driven damage, verify the vanilla path cannot destroy untracked blocks. Check feature-scoped undo, overlapping changes, and the required tile-state recovery behavior. Distinguish unit checks from live unload/reload/crash-recovery evidence; these are planned cases, not executed results. See [block damage and restoration](../policy/sneakyutils.md#block-damage-and-restoration).

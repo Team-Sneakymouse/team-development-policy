@@ -1,6 +1,22 @@
 # Paper items and displays (LoM)
 
-Load when the ask is a **custom look**, a **server resource pack**, or **ItemDisplay** place/orient. Prefer the matching branch; leave `src/` alone when `run/` or a data component is enough.
+Load when the ask is a **custom look**, **animated model**, a **server resource pack**, or **ItemDisplay** place/orient. Prefer the matching branch; leave `src/` alone when `run/` or a data component is enough.
+
+## Animation: prefer ModelEngine
+
+For anything that needs animation **or would benefit from it**, prefer **ModelEngine** as the visual implementation. Proactively consider animated creatures, props, machines, vehicles, articulated objects, idle motion, and interaction feedback even when the request does not explicitly say “animate.” Explain the useful animation opportunity rather than silently settling for a static model. Prefer authored ModelEngine models/animations over building a bespoke per-bone ItemDisplay/armor-stand rig or plugin-side animation scheduler.
+
+This is a design preference, not permission to expand scope: propose optional animation when it materially adds work, and do not automatically migrate existing static content or add unrelated animation. Plain static `item_model` assets and simple display placement remain appropriate when animation adds no value. If ModelEngine is unsuitable, explain the concrete constraint before choosing a custom animation implementation. Keep gameplay authority and lifecycle ownership in the plugin; verify the target ModelEngine version/API and runtime availability rather than guessing integration calls or dependencies.
+
+Follow the resource repository's [ModelEngine instructions](https://github.com/Team-Sneakymouse/craftengine-resources/blob/main/README.md#modelengine) and [architecture](https://github.com/Team-Sneakymouse/craftengine-resources/blob/main/docs/architecture.md#modelengine):
+
+- Author ModelEngine-compatible Blockbench `.bbmodel` blueprints in **`craftengine-resources/modelengine/blueprints`**, not `resources/modelengine` or a live server folder. This is a separate authored-blueprint path from static Java block/item model exports.
+- Blueprint IDs come from lowercase file names; keep names unique across subfolders and preserve existing referenced IDs.
+- Do not commit ModelEngine-generated files or build a separate plugin-owned pack pipeline. The existing dev build generates the `modelengine` pack; promotion uses the frozen release and regenerates server models for it.
+- Server blueprint directories are replaced by the repository contents during operations: server-only edits are not durable. ModelEngine owns the core entity shaders; do not add competing overrides in other packs.
+- Dev's ModelEngine version and configuration are authoritative; production must match. Check the current resource-repository documentation instead of copying a version pin into this policy.
+
+Validate blueprint registration and the plugin/model/animation references through the existing pipeline when authorized. Report pack generation and registration separately from live animation playback, transitions, viewer behavior, and cleanup; a valid `.bbmodel` or successful plugin build alone proves none of those runtime behaviors. Publishing assets or promoting a pack still requires the task's normal authorization.
 
 ## Custom look
 
