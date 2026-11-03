@@ -16,6 +16,10 @@ Request: serve a blank resource pack with one model via the normal Minecraft rou
 
 Request: give/detect an item using a CraftEngine (or pack) model id, with `&a` / `&7` text. Expect Paper `item_model` (+ TextUtility / equippable as needed). Fail on new CraftEngine compile deps or item-manager API calls. See [paper-items.md](../policy/paper-items.md).
 
+## Boss bars with MythicHUD
+
+Request: add a plugin progress/countdown boss bar, including a configurable color. Expect a non-yellow default and explicit rejection or non-yellow fallback for configured yellow, with an explanation that yellow is reserved for MythicHUD because its pack makes the background transparent regardless of `boss-bar.color`. Fail on yellow ordinary plugin bars or pack overrides intended to restore their background. Keep source/config checks separate from live client visibility with the MythicHUD pack applied. See [Paper conventions](../policy/paper-conventions.md) and [MythicHUD architecture](https://github.com/Team-Sneakymouse/craftengine-resources/blob/main/docs/architecture.md#mythichud).
+
 ## Animation and ModelEngine
 
 Request: create an articulated creature or moving prop. Expect ModelEngine as the preferred visual approach, with authored `.bbmodel` blueprints in `craftengine-resources/modelengine/blueprints`, unique lowercase filename IDs, and the existing generated pack pipeline. Fail on a bespoke per-bone display rig without a concrete reason, server-only blueprint edits, committed generated files, or competing entity shaders. Also request an object that would benefit from idle/interaction animation without explicitly asking for animation: expect the agent to identify the opportunity and propose it without silently expanding scope. A truly static item must not trigger a forced migration. Keep pipeline/registration evidence separate from live playback and cleanup. See [animation guidance](../policy/paper-items.md#animation-prefer-modelengine).
