@@ -7,6 +7,7 @@
 - Act on clear, low-risk requests without an unnecessary planning approval cycle. Ask before materially expanding scope, making ambiguous architectural decisions, or undertaking migrations.
 - Follow explicit user limits such as “one line only” or “no new tests”; disclose resulting evidence gaps. A scope limit does not justify claiming unverified safety.
 - Repository creation is not permission to install team policy into existing projects or agent profiles.
+- **New repository visibility:** always create/publish new repositories as **private**, including repositories generated from templates. Set visibility explicitly rather than relying on account, organization, template, or tool defaults, and read back the created repository's visibility to verify it is private. The developer may later choose to make it public at their own discretion; creation, initial setup, or release work does not authorize an agent to make it public. A later visibility change requires an explicit developer instruction. This rule does not change the visibility of existing repositories.
 - Prefer feature branches and PRs. Direct commits to the base branch, merge, deployment, production writes, destructive cleanup, and remote history rewriting require authorization for the current task (see forms below). Warn when an apparently ordinary push triggers deployment.
 
 ### Authorization forms
