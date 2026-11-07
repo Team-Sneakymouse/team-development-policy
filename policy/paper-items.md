@@ -26,7 +26,8 @@ CraftEngine (or pack) item ids are **model keys**, not a plugin API.
 - Set `item_model` / `ItemMeta.itemModel` to the id (`NamespacedKey`, e.g. `lom:racing_ring`).
 - Names and lore: SneakyUtils `TextUtility` — `&a` name, `&7` tooltip.
 - Wearables: Paper `DataComponentTypes.EQUIPPABLE` (e.g. `HEAD`), not a real armor material required for the look.
-- Detect by `item_model` and/or plugin PDC. Do **not** add CraftEngine as `compileOnly`, call its item manager, or dig its API unless the user asks for CraftEngine integration.
+- **Identity (place / use / give):** stamp and match MagicSpells' PDC key `magicspells:magicitem` (`PersistentDataType.STRING` = the magic-item internal name, e.g. `item-paladinNetGun`). Use `new NamespacedKey("magicspells", "magicitem")` so stacks from MagicSpells and from the plugin share one identity. Listeners and `isX` helpers read that key only — not `item_model` alone, and not full `ItemStack` / `isSimilar` equality. Config should name the magic-item id (e.g. `magic-item:`) beside the model. Display-only stacks (ItemDisplay visuals with no player use) stay model-only and need no stamp.
+- Do **not** add CraftEngine as `compileOnly`, call its item manager, or dig its API unless the user asks for CraftEngine integration.
 
 ## Server resource pack
 

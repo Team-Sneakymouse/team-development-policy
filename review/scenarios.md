@@ -18,7 +18,7 @@ Request: serve a blank resource pack with one model via the normal Minecraft rou
 
 ## Custom look without CraftEngine API
 
-Request: give/detect an item using a CraftEngine (or pack) model id, with `&a` / `&7` text. Expect Paper `item_model` (+ TextUtility / equippable as needed). Fail on new CraftEngine compile deps or item-manager API calls. See [paper-items.md](../policy/paper-items.md).
+Request: give/detect a placeable or usable item using a CraftEngine (or pack) model id, with `&a` / `&7` text. Expect Paper `item_model` for look (+ TextUtility / equippable as needed) and identity via `magicspells:magicitem` (stamp on give, match that PDC on detect — not model-only or full stack equality). Fail on new CraftEngine compile deps or item-manager API calls. See [paper-items.md](../policy/paper-items.md#custom-look).
 
 ## Boss bars with MythicHUD
 
