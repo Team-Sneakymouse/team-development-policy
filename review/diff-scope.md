@@ -8,7 +8,7 @@ Fail when the user asked only to serve or install a resource pack (or similar `r
 
 ## Custom look / CraftEngine model id
 
-Fail when the user named a CraftEngine or pack model id for a give/detect/look change and the diff adds a CraftEngine dependency or item-manager API, instead of `item_model` (and TextUtility / equippable as needed).
+Fail when the user named a CraftEngine or pack model id for a give/detect/look change and the diff adds a CraftEngine dependency or item-manager API, instead of `item_model` for look (and TextUtility / equippable as needed) plus `magicspells:magicitem` for place/use identity.
 
 ## Pass shape
 
