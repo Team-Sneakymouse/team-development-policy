@@ -102,4 +102,4 @@ Done when: the shared API is published, tested, and at least the requesting cons
 
 ## What stays local
 
-Plugin feature managers, protocol/proxy messaging, PocketBase clients, MagicsSpells spell/item/config domain types, and one-off helpers with a single consumer stay in that plugin until a second real consumer appears.
+Plugin feature managers, protocol/proxy messaging, PocketBase clients, MagicsSpells spell/config domain types, and one-off helpers with a single consumer stay in that plugin until a second real consumer appears. Shared magic-item registry, YAML/section/stack registration, matching, fingerprinting, and inventory updating belong in **SneakyItems**, not SneakyUtils. Soulbound/expiration enforcement stays in SneakyUtils (`ItemBehaviors`).
