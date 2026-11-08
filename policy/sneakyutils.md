@@ -22,6 +22,18 @@ Use the manager's `apply(internalName, block, newDataOrMaterial, applyPhysics)` 
 
 Keep mutations and manager access on the server thread. Use feature-specific internal names and the shared `Change.undo(applyPhysics)` / `undoAll(internalName, applyPhysics)` APIs for restoration; consumer cleanup must not call global `restoreAll()` and undo unrelated plugins' changes. Preserve the shared marker/PDC recovery mechanism rather than replacing it with consumer-only timers or snapshots. Verify the required block-state recovery behavior against the actual manager support; do not assume every tile-state field is persisted. Missing support is a blocker to resolve in the shared manager, not an exemption permitting untracked temporary changes or a private restoration implementation.
 
+## Placeholders
+
+When a Team-Sneakymouse Paper plugin needs PlaceholderAPI `setPlaceholders` (or equivalent expansion of `%…%` text for a player), use `com.sneakyutils.util.PlaceholderUtil` rather than a local PAPI compile dependency, a local soft-dep wrapper, or reflective `Class.forName("me.clip.placeholderapi.PlaceholderAPI")`.
+
+- Call on the **server thread**.
+- `PlaceholderUtil.setPlaceholders(player, text)` returns `text` unchanged when PlaceholderAPI is missing/disabled, `text` is null/blank, or it contains no `%`. Linkage/runtime failures also return `text` unchanged.
+- `PlaceholderUtil.isAvailable()` reports whether PlaceholderAPI is enabled; use it only when the caller needs a distinct absent-vs-unresolved branch.
+- Consumers keep their normal SneakyUtils dependency. SneakyUtils already owns the optional joined-classpath PAPI integration; do not re-declare PAPI solely for `setPlaceholders`. Registering a `PlaceholderExpansion` still requires a direct PAPI compile dependency in that plugin.
+- Prefer specialized helpers when they already exist: character names via `PlayerUtil.getCharacterName`, target eligibility via `PlayerUtil.canTarget`, and dispatch/paladin duty via `PlayerUtil.onDuty`.
+
+Done when: placeholder expansion goes through `PlaceholderUtil` (or a specialized `PlayerUtil` helper), with no fresh local reflective PAPI bridge for the same job.
+
 ## Player-facing character names
 
 All player-facing names identifying players (messages, menus, labels, scoreboards, and similar output) must use character names instead of Minecraft account names. The only exceptions are **admin/moderation tools** and **command auto-completion**, which may use Minecraft names. An ordinary player command's response is still player-facing output; the completion exception does not extend to that response.
