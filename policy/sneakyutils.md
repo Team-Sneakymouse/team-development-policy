@@ -48,13 +48,44 @@ Player helper contracts checked against [SneakyUtils PR #7 at `e7e795ef3f4fa9cbc
 
 ## Player eligibility for targeted and random effects
 
-Plugins must use `com.sneakyutils.util.PlayerUtil.canTarget(player)` to determine whether a player may be affected by **targeted or random effects**. Filter random candidate pools with this helper and check explicit targets too; do not duplicate the shared game-mode/vanish logic in each plugin. Call on the **server thread**. Recheck eligibility before applying delayed effects so a later game-mode or vanish change is respected. Feature-specific checks (range, permissions, world, alive/online state, etc.) remain additional requirements, not replacements for this gate.
+Plugins must use `com.sneakyutils.util.PlayerUtil.canTarget(player)` to decide whether a player is an eligible **effect recipient**: someone who may be hit, pulled, drained, buffed, scared, counted in an AOE/prey/encounter pool, randomly chosen for a gameplay effect, or otherwise acted on by shared combat/event logic. Apply it to explicit targets and to filtered nearby/`onlinePlayers` candidate pools. Call on the **server thread**. Recheck before delayed application so a later game-mode or vanish change is respected.
 
-- `canTarget(player)` defaults to excluding Creative. Survival and Adventure are eligible.
-- `canTarget(player, true)` explicitly allows Creative; Spectator is always excluded.
+Feature-specific checks (range, permissions, world, alive/online, NPC tags, race disguises, etc.) stay as **additional** requirements beside this gate, never as a replacement for shared game-mode/vanish eligibility.
+
+### Contract
+
+- `canTarget(player)` is the team default: Survival and Adventure are eligible; **Creative is excluded**; Spectator is never eligible.
+- `canTarget(player, true)` allows Creative only when a plugin maintainer explicitly opts in (prefer a named config such as `affect-creative`). Do not invent creative targeting.
 - A resolved, nonempty `%cmi_user_vanished_symbol%` excludes the player. This is a symbol, not a boolean: whitespace and the literal `false` are nonempty and therefore exclude.
-- Missing/disabled PAPI, an unavailable expansion, or an unresolved response does **not** establish vanish: this check fails open while game-mode restrictions still apply. Do not claim the helper guarantees vanish protection without the working integration.
-- The helper does not check dead/offline state, permissions, or viewer-specific visibility. Enforce any such requirements separately.
+- Missing/disabled PAPI, an unavailable expansion, or an unresolved response does **not** establish vanish: vanish fails open while game-mode restrictions still apply.
+- The helper does not check dead/offline state, permissions, or viewer-specific visibility.
+
+### What stays local (not `canTarget`)
+
+Keep these as ordinary feature logic; leave them alone when migrating recipients:
+
+- Self gates: “may this player use / fly / regen / spend mana / hold this tool?”
+- Creative item-consume or infinite-stack exemptions
+- Packet-entity / display visibility (`canSee` for hats, auras, plates, props)
+- Viewer-relative hide for a **specific caster** (`viewer.canSee(target)`): keep as an extra check **beside** `canTarget`, not instead of it
+- MagicSpells’ own targeting rules (MagicSpells keeps local targeting; other plugins still use `canTarget`)
+
+### Product exceptions
+
+These are intentional non-recipient flows. Do not force `canTarget` onto them; hunt/effect prey pools elsewhere still use it:
+
+- **SneakyKnives Knife Fairy** (`Raffle`): may visit every owed online player. Neighbor “alone” checks may exclude spectators only; they are not effect-target gates.
+- **SneakyHaunted ghost-hunter stations** (`StationModule`): countdown, kit-out, and call include every player in the station. Ghost-hunt prey eligibility still goes through `Prey.ok` / `canTarget`.
+
+### Anti-patterns
+
+Review failures for effect-recipient code:
+
+- Local `Vanish` helpers or `getMetadata("vanished")` loops that reimplement CMI vanish
+- Inverting `canTarget(..., true)` (or any overload) as a homemade “isVanished” helper
+- Recipient filters that only skip Spectator (or only Creative) and omit the shared vanish + default creative gate
+
+Done when: every new or touched effect-recipient path uses `canTarget` (default overload unless a documented creative opt-in exists), feature checks remain separate, and the product exceptions above are left intact.
 
 ## Contribute (expanding the shared plugin)
 
