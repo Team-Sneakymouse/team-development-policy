@@ -28,6 +28,8 @@ Choose evidence for the actual risk. Pure unit tests can cover state transitions
 ## Cross-plugin contracts
 
 - Prefer a published API or an explicit integration contract over reaching into another plugin's private implementation.
+- Prefer typed imports and Gradle dependencies over reflection. Use `Class.forName`, reflective method/field lookup, or MethodHandles **only when absolutely necessary** — typically when there is no published API, no Maven artifact you can `compileOnly`, and no shared SneakyUtils helper that already owns the integration. Optional plugins that publish Team-Sneakymouse or public Maven artifacts still take `compileOnly` imports plus `PluginManager` enablement checks; do not use reflection merely to avoid declaring a soft dependency.
+- Shared PlaceholderAPI expansion belongs in SneakyUtils `PlaceholderUtil` (consumers that already depend on SneakyUtils should not add a local PAPI dependency or reflective `setPlaceholders` solely for that). Character-name presentation still uses `PlayerUtil.getCharacterName`. See [placeholders](./sneakyutils.md#placeholders).
 - If reflection against private internals is the only practical option, document the dependency, the expected members/version assumptions, the user-visible fallback, and how incompatibility is reported. Keep failure bounded so an optional integration does not disable unrelated plugin behavior.
 - Treat a new hard dependency, API surface, or persisted cross-plugin format as a compatibility decision. Follow the repository's dependency and approval rules before broadening it.
 
