@@ -100,6 +100,30 @@ Ask before: large MagicsSpells peels, changing marker/PDC identity, or forcing a
 
 Done when: the shared API is published, tested, and at least the requesting consumer (preferably peers with copies) depends on it.
 
+## Display-only GUI inventories
+
+A **display-only GUI** is an inventory that shows plugin-built icons for browsing, picking, paging, or confirming. Players do not own those stacks: the plugin cancels transfers that would put a real item into a GUI slot. Examples: MagicSpells `MenuSpell`, SneakyRacials turtle reward / catalog-style screens. This is distinct from a **storage inventory**, where item movement in and out is the product (SneakyVaults, SCM `charadmin`, bags of holding, ender chests, the player inventory itself).
+
+### Requirements (display-only)
+
+1. **Location-free virtual container.** Open the menu with Paper `MenuType.GENERIC_9X1` … `GENERIC_9X6` and `MenuType.create(player, title)` so the view has no block location and never borrows a world chest. Reference implementation: MagicSpells `MenuSpell` (`createMenuView`, weak inventory set, open via the returned `InventoryView`). When a custom `InventoryHolder` is required, `Bukkit.createInventory(holder, size, title)` still yields a virtual chest inventory — use that only with a display-only holder, and never open a block inventory (or any location-bound container) as a GUI.
+2. **SneakyItems updater skip.** GUI icons must not be tagged, version-stamped, rebuilt, expired, or rewritten by SneakyItems' whole-inventory scans (`MagicItemUpdater.processInventory`, expiration `InventoryOpenEvent`). Two supported marks:
+   - **Preferred when you own a custom holder:** implement `com.sneakyutils.util.DisplayOnlyInventoryHolder` on that holder. `SneakyItemsHooks.isMenuInventory` treats those inventories as menus without a registered predicate.
+   - **When `MenuType.create` leaves no custom holder:** register a skip via `SneakyItemsAPI.registerMenuInventorySkip` (or `SneakyItemsHooks.registerMenuInventorySkip`) against a plugin-local weak inventory set, as MagicsSpells does for `MenuSpell.isMenuInventory`. Register once at plugin enable/load; do not rely on title-string matching.
+3. **Click safety.** Cancel shift-clicks, drags, and other transfers that would place a real item into a GUI slot. Per-item click handling for options still runs in the owning plugin.
+
+### Storage exceptions
+
+Do **not** implement `DisplayOnlyInventoryHolder` or register a menu-inventory skip on an inventory that stores or transfers real player items. Those inventories keep the normal updater path so magic items inside them stay current. Known intentional storage UIs include SneakyVaults and SCM character-admin inventories; bags and similar storage features follow the same rule.
+
+### Consumer checklist
+
+- Depend on published SneakyUtils (for the marker) and, when registering a skip predicate, on SneakyItems' public API.
+- Declare the usual runtime `depend` / load-before relationships those artifacts already require.
+- Prefer contributing shared menu helpers to SneakyUtils only when a second plugin needs the same creation/skip pattern; until then, copy the MenuSpell / `DisplayOnlyInventoryHolder` pattern locally.
+
+Done when: every new or touched display-only GUI opens a location-free virtual container, is skipped by `SneakyItemsHooks.isMenuInventory`, cancels real-item transfers into GUI slots, and leaves storage UIs unmarked.
+
 ## What stays local
 
 Plugin feature managers, protocol/proxy messaging, PocketBase clients, MagicsSpells spell/config domain types, and one-off helpers with a single consumer stay in that plugin until a second real consumer appears. Shared magic-item registry, YAML/section/stack registration, matching, fingerprinting, inventory updating, and soulbound/expiration enforcement belong in **SneakyItems**, not SneakyUtils.
