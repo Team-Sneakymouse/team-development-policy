@@ -40,6 +40,8 @@ When the ask is “serve a pack” or “blank pack with this model”:
 
 ## ItemDisplay place
 
+For a display **worn on a player** (riding them, following body or head), use [SneakyCosmetics](./sneakycosmetics.md) instead of the defaults below.
+
 Defaults that matched live racing-ring playtesting; override only when the user says otherwise:
 
 - Spawn at the **player eye** location (not the clicked block).
