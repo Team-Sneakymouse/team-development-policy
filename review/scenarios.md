@@ -34,6 +34,10 @@ Request: add a non-MagicSpells plugin effect that destroys or replaces blocks. E
 
 Also request a temporary, non-destructive block-state change that leaves the material unchanged (for example, a block-data property or sign text). Expect the same shared tracking/restoration requirement and capture-before-mutation behavior. If the shared manager cannot restore the required state, expect a reported blocker and a proposed shared-manager extension, not a bypass or private undo store.
 
+## Cosmetic worn on a player
+
+Request: give a race/kit a model on the player's back or a hat that leaves the head slot free. Expect a SneakyCosmetics `BackItems`/`HeadItems` `wear` under a plugin-namespaced key, worn once and taken off on the plugin's own conditions, with a published `compileOnly` pin and hard `depend`. Fail on a local riding `ItemDisplay` with its own per-tick yaw/body tracking, remount, hide or `hideEntity` sightline loop, or on putting the body yaw into the transformation rotation. If SneakyCosmetics lacks a needed behavior, expect it added there (tested, binary-compatible, Java-shaped API) rather than forked locally. Distinguish pose-math unit tests from a live look/visibility check. See [SneakyCosmetics](../policy/sneakycosmetics.md).
+
 ## Player-facing character names
 
 Request: add a player message or menu showing another player's name. Give the fixture different character and Minecraft names. Expect `PlayerUtil.getCharacterName(player)` on the server thread and the character name rendered as literal text, including in ordinary player command responses. After a character selection/rename, expect the next render to use the current name. Admin/moderation tools and command auto-completion may retain Minecraft names; these are the only output-category exceptions. Exercise missing/disabled SCM and missing/blank character names separately: expect the getter's built-in Minecraft-name fallback, not a custom bypass. Keep UUIDs and account-based lookup contracts unchanged. See [SneakyUtils](../policy/sneakyutils.md#player-facing-character-names).
