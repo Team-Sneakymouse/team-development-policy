@@ -1,0 +1,36 @@
+{
+ "note": "Starter colour set: replace it for each deck with `deck.py palette`. Roles feed theme.css.",
+ "colors": {
+  "QUARTZ_255": "#FFFCF5",
+  "QUARTZ_220": "#DCD9D3",
+  "QUARTZ_180": "#B4B1AC",
+  "QUARTZ_135": "#878581",
+  "COLOR_BLACK_255": "#191919",
+  "COLOR_BLACK_220": "#151515",
+  "COLOR_BLACK_180": "#111111",
+  "COLOR_BLACK_135": "#0D0D0D",
+  "COLOR_GRAY_255": "#4C4C4C",
+  "COLOR_GRAY_220": "#414141",
+  "COLOR_GRAY_180": "#353535",
+  "COLOR_GRAY_135": "#282828",
+  "COLOR_CYAN_255": "#4C7F99",
+  "COLOR_CYAN_220": "#416D84",
+  "COLOR_CYAN_180": "#35596C",
+  "COLOR_CYAN_135": "#284351",
+  "TERRACOTTA_ORANGE_255": "#9F5224",
+  "TERRACOTTA_ORANGE_220": "#89461F",
+  "TERRACOTTA_ORANGE_180": "#703919",
+  "TERRACOTTA_ORANGE_135": "#542B13"
+ },
+ "ink": "COLOR_BLACK_255",
+ "roles": {
+  "paper": "QUARTZ_255",
+  "panel": "QUARTZ_220",
+  "rule": "QUARTZ_180",
+  "muted": "QUARTZ_135",
+  "ink": "COLOR_BLACK_255",
+  "ink-soft": "COLOR_GRAY_255",
+  "accent": "TERRACOTTA_ORANGE_255",
+  "accent-2": "COLOR_CYAN_180"
+ }
+}

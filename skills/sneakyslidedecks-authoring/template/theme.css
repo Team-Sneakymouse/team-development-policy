@@ -1,0 +1,108 @@
+/* palette:begin (written by deck.py palette) */
+:root {
+  --paper: #FFFCF5;
+}
+/* palette:end */
+
+/* Deck theme. Colours only through the palette variables above: no hex here, no opacity, gradients or shadows
+   (they blend in-between colours that aren't map colours). Layouts: see the skill's references/layout.md. */
+
+:root {
+  --font-head: 'Space Grotesk', Arial, sans-serif;
+  --font-body: Inter, Arial, sans-serif;
+}
+
+@page { size: 1920px 1080px; margin: 0; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { background: var(--paper); }
+
+section.slide {
+  position: relative; width: 1920px; height: 1080px; overflow: hidden; break-after: page;
+  display: flex; flex-direction: row;
+  background: var(--paper); color: var(--ink); font-family: var(--font-body);
+}
+section.slide > aside { display: none; }          /* speaker notes: kept in the source, not printed */
+
+/* The picture: a flow child shown at its own pixel size (fitted to the panel by deck.py fit). */
+.art { display: block; flex: none; }
+
+/* The text column takes the rest. Padding = the margins; the bottom leaves room for the footer. */
+.text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 48px; padding: 128px 128px 160px 96px; }
+.art-right .text { padding: 128px 96px 160px 128px; }
+.full .text { padding: 128px 128px 160px; }
+.statement .text { padding: 128px 160px 160px; justify-content: center; }
+.cover .text { padding: 128px 96px 128px 128px; justify-content: space-between; }
+.text.tight { gap: 32px; }            /* for a slide that needs a little more room */
+
+/* Type scale: kicker 24, body 30, lead 40, title 64, statement 72, cover 80. */
+.head { display: flex; flex-direction: column; gap: 16px; }
+.kicker { font-size: 24px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); }
+h1 { font-family: var(--font-head); font-size: 80px; font-weight: 600; line-height: 1.05; }
+h2 { font-family: var(--font-head); font-size: 64px; font-weight: 600; line-height: 1.1; }
+h3 { font-size: 32px; font-weight: 600; line-height: 1.3; }
+p, li { font-size: 30px; line-height: 1.4; }
+.lead { font-size: 40px; line-height: 1.3; color: var(--accent-2); }
+.small { font-size: 24px; line-height: 1.4; color: var(--ink-soft); }
+.statement h2 { font-size: 72px; }
+strong, b { font-weight: 600; }
+
+/* Bulleted points */
+ul.points { padding-left: 1.1em; display: flex; flex-direction: column; gap: 8px; }
+
+/* Numbered rows between rules */
+ol.rows { list-style: none; counter-reset: row; }
+ol.rows > li { counter-increment: row; display: flex; gap: 24px; align-items: baseline;
+  border-top: 2px solid var(--rule); padding: 20px 0; }
+ol.rows > li:last-child { border-bottom: 2px solid var(--rule); }
+ol.rows > li::before { content: counter(row, decimal-leading-zero); flex: none; width: 56px;
+  font-family: var(--font-head); font-size: 28px; font-weight: 600; color: var(--accent); }
+
+/* Ruled table */
+table.ruled { width: 100%; border-collapse: collapse; }
+table.ruled td, table.ruled th { font-size: 28px; line-height: 1.4; padding: 12px 24px 12px 0; text-align: left;
+  border-top: 2px solid var(--rule); vertical-align: baseline; }
+table.ruled tr:last-child td { border-bottom: 2px solid var(--rule); }
+table.ruled th { font-size: 24px; font-weight: 600; color: var(--ink-soft); }
+table.ruled .num { text-align: right; padding-right: 0; font-family: var(--font-head); font-variant-numeric: tabular-nums; }
+table.ruled .tag { font-size: 24px; color: var(--accent-2); }
+
+/* Card row, for text-only slides */
+.cards { display: flex; gap: 32px; }
+.card { flex: 1; display: flex; flex-direction: column; gap: 12px; padding: 32px;
+  background: var(--panel); border-radius: 16px; }
+.card p { font-size: 26px; color: var(--ink-soft); }
+
+/* Footer (added by deck.py build from deck.json "footer"; a section with class no-footer gets none) */
+.footer { position: absolute; bottom: 64px; right: 128px; font-size: 24px; line-height: 1.4; color: var(--ink-soft); }
+.art-right .footer { right: auto; left: 128px; }
+
+/* Big numbers with a caption */
+.stats { display: flex; flex-direction: column; }
+.stat { display: flex; align-items: baseline; gap: 32px; border-top: 2px solid var(--rule); padding: 16px 0; }
+.stat:last-child { border-bottom: 2px solid var(--rule); }
+.stat .big { flex: none; width: 150px; font-family: var(--font-head); font-size: 72px; font-weight: 600; line-height: 1;
+  color: var(--accent); }
+
+/* Labelled items between rules: a short name over a line or two */
+.items { display: flex; flex-direction: column; }
+.item { display: flex; flex-direction: column; gap: 4px; border-top: 2px solid var(--rule); padding: 20px 0; }
+.item:last-child { border-bottom: 2px solid var(--rule); }
+
+/* Two or three columns of equal width */
+.columns { display: flex; gap: 64px; }
+.columns > * { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+.label { font-size: 24px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--accent-2); }
+.label.good, .good { color: var(--good); }
+.label.bad, .bad { color: var(--bad); }
+
+/* Code */
+pre.code { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 24px; line-height: 1.5; white-space: pre;
+  background: var(--panel); color: var(--ink); padding: 32px 40px; border-radius: 16px; }
+pre.code .c { color: var(--ink-soft); }
+code { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 0.85em; }
+
+/* Table extras: a header row, a compact variant for 8+ rows, verdict cells */
+table.ruled.compact td, table.ruled.compact th { font-size: 24px; padding: 8px 24px 8px 0; }
+table.ruled .yes { color: var(--good); font-weight: 600; }
+table.ruled .no { color: var(--bad); font-weight: 600; }
+table.ruled .partly { color: var(--ink-soft); }

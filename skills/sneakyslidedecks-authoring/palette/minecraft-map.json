@@ -1,0 +1,1714 @@
+{
+ "source": "org.bukkit.map.MapPalette.colors (Paper API 1.21.1 sources; same 248 entries in 26.2)",
+ "note": "Map colour id = base*4 + shade index. Shade 135 never appears on vanilla-rendered terrain maps but displays fine on plugin-drawn maps.",
+ "colors": [
+  {
+   "id": 4,
+   "name": "GRASS_180",
+   "hex": "#597D27",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 5,
+   "name": "GRASS_220",
+   "hex": "#6D9930",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 6,
+   "name": "GRASS_255",
+   "hex": "#7FB238",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 7,
+   "name": "GRASS_135",
+   "hex": "#435E1D",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 8,
+   "name": "SAND_180",
+   "hex": "#AEA473",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 9,
+   "name": "SAND_220",
+   "hex": "#D5C98C",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 10,
+   "name": "SAND_255",
+   "hex": "#F7E9A3",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 11,
+   "name": "SAND_135",
+   "hex": "#827B56",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 12,
+   "name": "WOOL_180",
+   "hex": "#8C8C8C",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 13,
+   "name": "WOOL_220",
+   "hex": "#ABABAB",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 14,
+   "name": "WOOL_255",
+   "hex": "#C7C7C7",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 15,
+   "name": "WOOL_135",
+   "hex": "#696969",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 16,
+   "name": "FIRE_180",
+   "hex": "#B40000",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 17,
+   "name": "FIRE_220",
+   "hex": "#DC0000",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 18,
+   "name": "FIRE_255",
+   "hex": "#FF0000",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 19,
+   "name": "FIRE_135",
+   "hex": "#870000",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 20,
+   "name": "ICE_180",
+   "hex": "#7070B4",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 21,
+   "name": "ICE_220",
+   "hex": "#8A8ADC",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 22,
+   "name": "ICE_255",
+   "hex": "#A0A0FF",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 23,
+   "name": "ICE_135",
+   "hex": "#545487",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 24,
+   "name": "METAL_180",
+   "hex": "#757575",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 25,
+   "name": "METAL_220",
+   "hex": "#909090",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 26,
+   "name": "METAL_255",
+   "hex": "#A7A7A7",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 27,
+   "name": "METAL_135",
+   "hex": "#585858",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 28,
+   "name": "PLANT_180",
+   "hex": "#005700",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 29,
+   "name": "PLANT_220",
+   "hex": "#006A00",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 30,
+   "name": "PLANT_255",
+   "hex": "#007C00",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 31,
+   "name": "PLANT_135",
+   "hex": "#004100",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 32,
+   "name": "SNOW_180",
+   "hex": "#B4B4B4",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 33,
+   "name": "SNOW_220",
+   "hex": "#DCDCDC",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 34,
+   "name": "SNOW_255",
+   "hex": "#FFFFFF",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 35,
+   "name": "SNOW_135",
+   "hex": "#878787",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 36,
+   "name": "CLAY_180",
+   "hex": "#737681",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 37,
+   "name": "CLAY_220",
+   "hex": "#8D909E",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 38,
+   "name": "CLAY_255",
+   "hex": "#A4A8B8",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 39,
+   "name": "CLAY_135",
+   "hex": "#565861",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 40,
+   "name": "DIRT_180",
+   "hex": "#6A4C36",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 41,
+   "name": "DIRT_220",
+   "hex": "#825E42",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 42,
+   "name": "DIRT_255",
+   "hex": "#976D4D",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 43,
+   "name": "DIRT_135",
+   "hex": "#4F3928",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 44,
+   "name": "STONE_180",
+   "hex": "#4F4F4F",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 45,
+   "name": "STONE_220",
+   "hex": "#606060",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 46,
+   "name": "STONE_255",
+   "hex": "#707070",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 47,
+   "name": "STONE_135",
+   "hex": "#3B3B3B",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 48,
+   "name": "WATER_180",
+   "hex": "#2D2DB4",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 49,
+   "name": "WATER_220",
+   "hex": "#3737DC",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 50,
+   "name": "WATER_255",
+   "hex": "#4040FF",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 51,
+   "name": "WATER_135",
+   "hex": "#212187",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 52,
+   "name": "WOOD_180",
+   "hex": "#645432",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 53,
+   "name": "WOOD_220",
+   "hex": "#7B663E",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 54,
+   "name": "WOOD_255",
+   "hex": "#8F7748",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 55,
+   "name": "WOOD_135",
+   "hex": "#4B3F26",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 56,
+   "name": "QUARTZ_180",
+   "hex": "#B4B1AC",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 57,
+   "name": "QUARTZ_220",
+   "hex": "#DCD9D3",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 58,
+   "name": "QUARTZ_255",
+   "hex": "#FFFCF5",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 59,
+   "name": "QUARTZ_135",
+   "hex": "#878581",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 60,
+   "name": "COLOR_ORANGE_180",
+   "hex": "#985924",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 61,
+   "name": "COLOR_ORANGE_220",
+   "hex": "#BA6D2C",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 62,
+   "name": "COLOR_ORANGE_255",
+   "hex": "#D87F33",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 63,
+   "name": "COLOR_ORANGE_135",
+   "hex": "#72431B",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 64,
+   "name": "COLOR_MAGENTA_180",
+   "hex": "#7D3598",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 65,
+   "name": "COLOR_MAGENTA_220",
+   "hex": "#9941BA",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 66,
+   "name": "COLOR_MAGENTA_255",
+   "hex": "#B24CD8",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 67,
+   "name": "COLOR_MAGENTA_135",
+   "hex": "#5E2872",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 68,
+   "name": "COLOR_LIGHT_BLUE_180",
+   "hex": "#486C98",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 69,
+   "name": "COLOR_LIGHT_BLUE_220",
+   "hex": "#5884BA",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 70,
+   "name": "COLOR_LIGHT_BLUE_255",
+   "hex": "#6699D8",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 71,
+   "name": "COLOR_LIGHT_BLUE_135",
+   "hex": "#365172",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 72,
+   "name": "COLOR_YELLOW_180",
+   "hex": "#A1A124",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 73,
+   "name": "COLOR_YELLOW_220",
+   "hex": "#C5C52C",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 74,
+   "name": "COLOR_YELLOW_255",
+   "hex": "#E5E533",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 75,
+   "name": "COLOR_YELLOW_135",
+   "hex": "#79791B",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 76,
+   "name": "COLOR_LIGHT_GREEN_180",
+   "hex": "#599011",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 77,
+   "name": "COLOR_LIGHT_GREEN_220",
+   "hex": "#6DB015",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 78,
+   "name": "COLOR_LIGHT_GREEN_255",
+   "hex": "#7FCC19",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 79,
+   "name": "COLOR_LIGHT_GREEN_135",
+   "hex": "#436C0D",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 80,
+   "name": "COLOR_PINK_180",
+   "hex": "#AA5974",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 81,
+   "name": "COLOR_PINK_220",
+   "hex": "#D06D8E",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 82,
+   "name": "COLOR_PINK_255",
+   "hex": "#F27FA5",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 83,
+   "name": "COLOR_PINK_135",
+   "hex": "#804357",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 84,
+   "name": "COLOR_GRAY_180",
+   "hex": "#353535",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 85,
+   "name": "COLOR_GRAY_220",
+   "hex": "#414141",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 86,
+   "name": "COLOR_GRAY_255",
+   "hex": "#4C4C4C",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 87,
+   "name": "COLOR_GRAY_135",
+   "hex": "#282828",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 88,
+   "name": "COLOR_LIGHT_GRAY_180",
+   "hex": "#6C6C6C",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 89,
+   "name": "COLOR_LIGHT_GRAY_220",
+   "hex": "#848484",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 90,
+   "name": "COLOR_LIGHT_GRAY_255",
+   "hex": "#999999",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 91,
+   "name": "COLOR_LIGHT_GRAY_135",
+   "hex": "#515151",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 92,
+   "name": "COLOR_CYAN_180",
+   "hex": "#35596C",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 93,
+   "name": "COLOR_CYAN_220",
+   "hex": "#416D84",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 94,
+   "name": "COLOR_CYAN_255",
+   "hex": "#4C7F99",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 95,
+   "name": "COLOR_CYAN_135",
+   "hex": "#284351",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 96,
+   "name": "COLOR_PURPLE_180",
+   "hex": "#592C7D",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 97,
+   "name": "COLOR_PURPLE_220",
+   "hex": "#6D3699",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 98,
+   "name": "COLOR_PURPLE_255",
+   "hex": "#7F3FB2",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 99,
+   "name": "COLOR_PURPLE_135",
+   "hex": "#43215E",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 100,
+   "name": "COLOR_BLUE_180",
+   "hex": "#24357D",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 101,
+   "name": "COLOR_BLUE_220",
+   "hex": "#2C4199",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 102,
+   "name": "COLOR_BLUE_255",
+   "hex": "#334CB2",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 103,
+   "name": "COLOR_BLUE_135",
+   "hex": "#1B285E",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 104,
+   "name": "COLOR_BROWN_180",
+   "hex": "#483524",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 105,
+   "name": "COLOR_BROWN_220",
+   "hex": "#58412C",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 106,
+   "name": "COLOR_BROWN_255",
+   "hex": "#664C33",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 107,
+   "name": "COLOR_BROWN_135",
+   "hex": "#36281B",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 108,
+   "name": "COLOR_GREEN_180",
+   "hex": "#485924",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 109,
+   "name": "COLOR_GREEN_220",
+   "hex": "#586D2C",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 110,
+   "name": "COLOR_GREEN_255",
+   "hex": "#667F33",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 111,
+   "name": "COLOR_GREEN_135",
+   "hex": "#36431B",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 112,
+   "name": "COLOR_RED_180",
+   "hex": "#6C2424",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 113,
+   "name": "COLOR_RED_220",
+   "hex": "#842C2C",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 114,
+   "name": "COLOR_RED_255",
+   "hex": "#993333",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 115,
+   "name": "COLOR_RED_135",
+   "hex": "#511B1B",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 116,
+   "name": "COLOR_BLACK_180",
+   "hex": "#111111",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 117,
+   "name": "COLOR_BLACK_220",
+   "hex": "#151515",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 118,
+   "name": "COLOR_BLACK_255",
+   "hex": "#191919",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 119,
+   "name": "COLOR_BLACK_135",
+   "hex": "#0D0D0D",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 120,
+   "name": "GOLD_180",
+   "hex": "#B0A836",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 121,
+   "name": "GOLD_220",
+   "hex": "#D7CD42",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 122,
+   "name": "GOLD_255",
+   "hex": "#FAEE4D",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 123,
+   "name": "GOLD_135",
+   "hex": "#847E28",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 124,
+   "name": "DIAMOND_180",
+   "hex": "#409A96",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 125,
+   "name": "DIAMOND_220",
+   "hex": "#4FBCB7",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 126,
+   "name": "DIAMOND_255",
+   "hex": "#5CDBD5",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 127,
+   "name": "DIAMOND_135",
+   "hex": "#307370",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 128,
+   "name": "LAPIS_180",
+   "hex": "#345AB4",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 129,
+   "name": "LAPIS_220",
+   "hex": "#3F6EDC",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 130,
+   "name": "LAPIS_255",
+   "hex": "#4A80FF",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 131,
+   "name": "LAPIS_135",
+   "hex": "#274387",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 132,
+   "name": "EMERALD_180",
+   "hex": "#009928",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 133,
+   "name": "EMERALD_220",
+   "hex": "#00BB32",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 134,
+   "name": "EMERALD_255",
+   "hex": "#00D93A",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 135,
+   "name": "EMERALD_135",
+   "hex": "#00721E",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 136,
+   "name": "PODZOL_180",
+   "hex": "#5B3C22",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 137,
+   "name": "PODZOL_220",
+   "hex": "#6F4A2A",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 138,
+   "name": "PODZOL_255",
+   "hex": "#815631",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 139,
+   "name": "PODZOL_135",
+   "hex": "#442D19",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 140,
+   "name": "NETHER_180",
+   "hex": "#4F0100",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 141,
+   "name": "NETHER_220",
+   "hex": "#600100",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 142,
+   "name": "NETHER_255",
+   "hex": "#700200",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 143,
+   "name": "NETHER_135",
+   "hex": "#3B0100",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 144,
+   "name": "TERRACOTTA_WHITE_180",
+   "hex": "#937C71",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 145,
+   "name": "TERRACOTTA_WHITE_220",
+   "hex": "#B4988A",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 146,
+   "name": "TERRACOTTA_WHITE_255",
+   "hex": "#D1B1A1",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 147,
+   "name": "TERRACOTTA_WHITE_135",
+   "hex": "#6E5D55",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 148,
+   "name": "TERRACOTTA_ORANGE_180",
+   "hex": "#703919",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 149,
+   "name": "TERRACOTTA_ORANGE_220",
+   "hex": "#89461F",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 150,
+   "name": "TERRACOTTA_ORANGE_255",
+   "hex": "#9F5224",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 151,
+   "name": "TERRACOTTA_ORANGE_135",
+   "hex": "#542B13",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 152,
+   "name": "TERRACOTTA_MAGENTA_180",
+   "hex": "#693D4C",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 153,
+   "name": "TERRACOTTA_MAGENTA_220",
+   "hex": "#804B5D",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 154,
+   "name": "TERRACOTTA_MAGENTA_255",
+   "hex": "#95576C",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 155,
+   "name": "TERRACOTTA_MAGENTA_135",
+   "hex": "#4E2E39",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 156,
+   "name": "TERRACOTTA_LIGHT_BLUE_180",
+   "hex": "#4F4C61",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 157,
+   "name": "TERRACOTTA_LIGHT_BLUE_220",
+   "hex": "#605D77",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 158,
+   "name": "TERRACOTTA_LIGHT_BLUE_255",
+   "hex": "#706C8A",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 159,
+   "name": "TERRACOTTA_LIGHT_BLUE_135",
+   "hex": "#3B3949",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 160,
+   "name": "TERRACOTTA_YELLOW_180",
+   "hex": "#835D19",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 161,
+   "name": "TERRACOTTA_YELLOW_220",
+   "hex": "#A0721F",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 162,
+   "name": "TERRACOTTA_YELLOW_255",
+   "hex": "#BA8524",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 163,
+   "name": "TERRACOTTA_YELLOW_135",
+   "hex": "#624613",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 164,
+   "name": "TERRACOTTA_LIGHT_GREEN_180",
+   "hex": "#485225",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 165,
+   "name": "TERRACOTTA_LIGHT_GREEN_220",
+   "hex": "#58642D",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 166,
+   "name": "TERRACOTTA_LIGHT_GREEN_255",
+   "hex": "#677535",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 167,
+   "name": "TERRACOTTA_LIGHT_GREEN_135",
+   "hex": "#363D1C",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 168,
+   "name": "TERRACOTTA_PINK_180",
+   "hex": "#703637",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 169,
+   "name": "TERRACOTTA_PINK_220",
+   "hex": "#8A4243",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 170,
+   "name": "TERRACOTTA_PINK_255",
+   "hex": "#A04D4E",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 171,
+   "name": "TERRACOTTA_PINK_135",
+   "hex": "#542829",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 172,
+   "name": "TERRACOTTA_GRAY_180",
+   "hex": "#281C18",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 173,
+   "name": "TERRACOTTA_GRAY_220",
+   "hex": "#31231E",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 174,
+   "name": "TERRACOTTA_GRAY_255",
+   "hex": "#392923",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 175,
+   "name": "TERRACOTTA_GRAY_135",
+   "hex": "#1E1512",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 176,
+   "name": "TERRACOTTA_LIGHT_GRAY_180",
+   "hex": "#5F4B45",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 177,
+   "name": "TERRACOTTA_LIGHT_GRAY_220",
+   "hex": "#745C54",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 178,
+   "name": "TERRACOTTA_LIGHT_GRAY_255",
+   "hex": "#876B62",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 179,
+   "name": "TERRACOTTA_LIGHT_GRAY_135",
+   "hex": "#473833",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 180,
+   "name": "TERRACOTTA_CYAN_180",
+   "hex": "#3D4040",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 181,
+   "name": "TERRACOTTA_CYAN_220",
+   "hex": "#4B4F4F",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 182,
+   "name": "TERRACOTTA_CYAN_255",
+   "hex": "#575C5C",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 183,
+   "name": "TERRACOTTA_CYAN_135",
+   "hex": "#2E3030",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 184,
+   "name": "TERRACOTTA_PURPLE_180",
+   "hex": "#56333E",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 185,
+   "name": "TERRACOTTA_PURPLE_220",
+   "hex": "#693E4B",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 186,
+   "name": "TERRACOTTA_PURPLE_255",
+   "hex": "#7A4958",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 187,
+   "name": "TERRACOTTA_PURPLE_135",
+   "hex": "#40262E",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 188,
+   "name": "TERRACOTTA_BLUE_180",
+   "hex": "#352B40",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 189,
+   "name": "TERRACOTTA_BLUE_220",
+   "hex": "#41354F",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 190,
+   "name": "TERRACOTTA_BLUE_255",
+   "hex": "#4C3E5C",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 191,
+   "name": "TERRACOTTA_BLUE_135",
+   "hex": "#282030",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 192,
+   "name": "TERRACOTTA_BROWN_180",
+   "hex": "#352318",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 193,
+   "name": "TERRACOTTA_BROWN_220",
+   "hex": "#412B1E",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 194,
+   "name": "TERRACOTTA_BROWN_255",
+   "hex": "#4C3223",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 195,
+   "name": "TERRACOTTA_BROWN_135",
+   "hex": "#281A12",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 196,
+   "name": "TERRACOTTA_GREEN_180",
+   "hex": "#35391D",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 197,
+   "name": "TERRACOTTA_GREEN_220",
+   "hex": "#414624",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 198,
+   "name": "TERRACOTTA_GREEN_255",
+   "hex": "#4C522A",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 199,
+   "name": "TERRACOTTA_GREEN_135",
+   "hex": "#282B16",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 200,
+   "name": "TERRACOTTA_RED_180",
+   "hex": "#642A20",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 201,
+   "name": "TERRACOTTA_RED_220",
+   "hex": "#7A3327",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 202,
+   "name": "TERRACOTTA_RED_255",
+   "hex": "#8E3C2E",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 203,
+   "name": "TERRACOTTA_RED_135",
+   "hex": "#4B1F18",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 204,
+   "name": "TERRACOTTA_BLACK_180",
+   "hex": "#1A0F0B",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 205,
+   "name": "TERRACOTTA_BLACK_220",
+   "hex": "#1F120D",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 206,
+   "name": "TERRACOTTA_BLACK_255",
+   "hex": "#251610",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 207,
+   "name": "TERRACOTTA_BLACK_135",
+   "hex": "#130B08",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 208,
+   "name": "CRIMSON_NYLIUM_180",
+   "hex": "#852122",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 209,
+   "name": "CRIMSON_NYLIUM_220",
+   "hex": "#A3292A",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 210,
+   "name": "CRIMSON_NYLIUM_255",
+   "hex": "#BD3031",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 211,
+   "name": "CRIMSON_NYLIUM_135",
+   "hex": "#641919",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 212,
+   "name": "CRIMSON_STEM_180",
+   "hex": "#682C44",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 213,
+   "name": "CRIMSON_STEM_220",
+   "hex": "#7F3653",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 214,
+   "name": "CRIMSON_STEM_255",
+   "hex": "#943F61",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 215,
+   "name": "CRIMSON_STEM_135",
+   "hex": "#4E2133",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 216,
+   "name": "CRIMSON_HYPHAE_180",
+   "hex": "#401114",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 217,
+   "name": "CRIMSON_HYPHAE_220",
+   "hex": "#4F1519",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 218,
+   "name": "CRIMSON_HYPHAE_255",
+   "hex": "#5C191D",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 219,
+   "name": "CRIMSON_HYPHAE_135",
+   "hex": "#300D0F",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 220,
+   "name": "WARPED_NYLIUM_180",
+   "hex": "#0F585E",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 221,
+   "name": "WARPED_NYLIUM_220",
+   "hex": "#126C73",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 222,
+   "name": "WARPED_NYLIUM_255",
+   "hex": "#167E86",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 223,
+   "name": "WARPED_NYLIUM_135",
+   "hex": "#0B4246",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 224,
+   "name": "WARPED_STEM_180",
+   "hex": "#286462",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 225,
+   "name": "WARPED_STEM_220",
+   "hex": "#327A78",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 226,
+   "name": "WARPED_STEM_255",
+   "hex": "#3A8E8C",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 227,
+   "name": "WARPED_STEM_135",
+   "hex": "#1E4B4A",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 228,
+   "name": "WARPED_HYPHAE_180",
+   "hex": "#3C1F2B",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 229,
+   "name": "WARPED_HYPHAE_220",
+   "hex": "#4A2535",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 230,
+   "name": "WARPED_HYPHAE_255",
+   "hex": "#562C3E",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 231,
+   "name": "WARPED_HYPHAE_135",
+   "hex": "#2D1720",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 232,
+   "name": "WARPED_WART_BLOCK_180",
+   "hex": "#0E7F5D",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 233,
+   "name": "WARPED_WART_BLOCK_220",
+   "hex": "#119B72",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 234,
+   "name": "WARPED_WART_BLOCK_255",
+   "hex": "#14B485",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 235,
+   "name": "WARPED_WART_BLOCK_135",
+   "hex": "#0A5F46",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 236,
+   "name": "DEEPSLATE_180",
+   "hex": "#464646",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 237,
+   "name": "DEEPSLATE_220",
+   "hex": "#565656",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 238,
+   "name": "DEEPSLATE_255",
+   "hex": "#646464",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 239,
+   "name": "DEEPSLATE_135",
+   "hex": "#343434",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 240,
+   "name": "RAW_IRON_180",
+   "hex": "#987B67",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 241,
+   "name": "RAW_IRON_220",
+   "hex": "#BA967E",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 242,
+   "name": "RAW_IRON_255",
+   "hex": "#D8AF93",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 243,
+   "name": "RAW_IRON_135",
+   "hex": "#725C4D",
+   "shade": 135,
+   "natural": false
+  },
+  {
+   "id": 244,
+   "name": "GLOW_LICHEN_180",
+   "hex": "#597569",
+   "shade": 180,
+   "natural": true
+  },
+  {
+   "id": 245,
+   "name": "GLOW_LICHEN_220",
+   "hex": "#6D9081",
+   "shade": 220,
+   "natural": true
+  },
+  {
+   "id": 246,
+   "name": "GLOW_LICHEN_255",
+   "hex": "#7FA796",
+   "shade": 255,
+   "natural": true
+  },
+  {
+   "id": 247,
+   "name": "GLOW_LICHEN_135",
+   "hex": "#43584F",
+   "shade": 135,
+   "natural": false
+  }
+ ]
+}

@@ -14,6 +14,7 @@ Shared Team-Sneakymouse / rawb.tv development policy and an agent-assisted devel
 - [SneakyCosmetics](policy/sneakycosmetics.md): models worn on players (back items, hats over the head slot) as riding displays; cross-plugin Kotlin API shape.
 - [Development workflow](workflows/development.md): lightweight stages, risk gates, and nontrivial evidence shape.
 - [Efficiency-review skill](skills/efficiency-review/SKILL.md): optional Minecraft/Paper and JVM hot-path reviews; load only when relevant; not installed by this repository.
+- [SneakySlideDecks authoring skill](skills/sneakyslidedecks-authoring/SKILL.md): optional; illustrated slide decks built locally to a PDF whose art and colours are all Minecraft map colours, for SneakySlideDecks map screens; not installed by this repository.
 - [Adapter design](adapters/README.md): discovery adapters and sibling-checkout source of truth.
 - [Installer design](installer/DESIGN.md): pointer + bootstrap enrollment; no executable installer yet.
 - [Project context example](examples/project-context.md): local facts, not duplicated team policy.
