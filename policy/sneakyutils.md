@@ -40,7 +40,7 @@ All player-facing names identifying players (messages, menus, labels, scoreboard
 
 Use `com.sneakyutils.util.PlayerUtil.getCharacterName(player)` rather than `player.getName()` / `player.name`, a local SCM bridge, or a PlaceholderAPI workaround. Call it on the **server thread**; capture the returned string there before any asynchronous work that needs it. Insert the result as literal text, not as MiniMessage or placeholder input.
 
-The player-facing naming rule and its two exceptions are unchanged. The API now lives in `PlayerUtil`; the old `PlayerNameUtils` class was removed, so consumers must update imports/class references and recompile against a matching published SneakyUtils version.
+The getter is `PlayerUtil.getCharacterName`. SneakyUtils has no `PlayerNameUtils` class; code that still references it must switch to `PlayerUtil` and compile against a published SneakyUtils version that has it.
 
 The getter reads SCM's current `%sneakycharacters_character_name_noformat%` output through optional PlaceholderAPI. It preserves provider output exactly: no local stripping, trimming, formatting repairs, or recursive placeholder expansion. It uses the character name, not the display name's prefix/title/gender suffix. When SCM/PAPI is absent or disabled, or the result is blank/unresolved, it falls back to the Minecraft name. This availability fallback is not permission to bypass the getter for ordinary player-facing output. Consumers retain their normal SneakyUtils dependency; SneakyUtils owns the optional joined-classpath PAPI integration. Do not add a reverse dependency on SCM or duplicate its integration in consumers.
 
@@ -92,11 +92,11 @@ Done when: every new or touched effect-recipient path uses `canTarget` (default 
 When a helper would serve **more than one** Team-Sneakymouse Paper plugin, or already exists as near-copies across plugins:
 
 1. Add or extend it in the **SneakyUtils** repository under `com.sneakyutils.util` (or a manager package when working memory / listeners are required).
-2. Accept only portable code: Bukkit/Paper/Adventure/Java (and declared soft deps). No MagicsSpells spell types, no consumer plugin singletons, no game-mode domain models.
+2. Accept only portable code: Bukkit/Paper/Adventure/Java (and declared soft deps). No MagicSpells spell types, no consumer plugin singletons, no game-mode domain models.
 3. Cover behavior with tests in SneakyUtils; run `./gradlew check`; publish via the repo’s normal `main` publish flow before pinning a new version in consumers.
-4. Migrate consumers to the published version in a follow-up (or the same authorized multi-repo task). Leave MagicsSpells-only or single-plugin peels until a second consumer needs them.
+4. Migrate consumers to the published version in a follow-up (or the same authorized multi-repo task). Leave MagicSpells-only or single-plugin peels until a second consumer needs them.
 
-Ask before: large MagicsSpells peels, changing marker/PDC identity, or forcing a hard depend on plugins that only need static helpers at compile time in unusual loaders.
+Ask before: large MagicSpells peels, changing marker/PDC identity, or forcing a hard depend on plugins that only need static helpers at compile time in unusual loaders.
 
 Done when: the shared API is published, tested, and at least the requesting consumer (preferably peers with copies) depends on it.
 
@@ -109,7 +109,7 @@ A **display-only GUI** is an inventory that shows plugin-built icons for browsin
 1. **Location-free virtual container.** Open the menu with Paper `MenuType.GENERIC_9X1` … `GENERIC_9X6` and `MenuType.create(player, title)` so the view has no block location and never borrows a world chest. Reference implementation: MagicSpells `MenuSpell` (`createMenuView`, weak inventory set, open via the returned `InventoryView`). When a custom `InventoryHolder` is required, `Bukkit.createInventory(holder, size, title)` still yields a virtual chest inventory — use that only with a display-only holder, and never open a block inventory (or any location-bound container) as a GUI.
 2. **SneakyItems updater skip.** GUI icons must not be tagged, version-stamped, rebuilt, expired, or rewritten by SneakyItems' whole-inventory scans (`MagicItemUpdater.processInventory`, expiration `InventoryOpenEvent`). Two supported marks:
    - **Preferred when you own a custom holder:** implement `com.sneakyutils.util.DisplayOnlyInventoryHolder` on that holder. `SneakyItemsHooks.isMenuInventory` treats those inventories as menus without a registered predicate.
-   - **When `MenuType.create` leaves no custom holder:** register a skip via `SneakyItemsAPI.registerMenuInventorySkip` (or `SneakyItemsHooks.registerMenuInventorySkip`) against a plugin-local weak inventory set, as MagicsSpells does for `MenuSpell.isMenuInventory`. Register once at plugin enable/load; do not rely on title-string matching.
+   - **When `MenuType.create` leaves no custom holder:** register a skip via `SneakyItemsAPI.registerMenuInventorySkip` (or `SneakyItemsHooks.registerMenuInventorySkip`) against a plugin-local weak inventory set, as MagicSpells does for `MenuSpell.isMenuInventory`. Register once at plugin enable/load; do not rely on title-string matching.
 3. **Click safety.** Cancel shift-clicks, drags, and other transfers that would place a real item into a GUI slot. Per-item click handling for options still runs in the owning plugin.
 
 ### Storage exceptions
@@ -126,4 +126,4 @@ Done when: every new or touched display-only GUI opens a location-free virtual c
 
 ## What stays local
 
-Plugin feature managers, protocol/proxy messaging, PocketBase clients, MagicsSpells spell/config domain types, and one-off helpers with a single consumer stay in that plugin until a second real consumer appears. Shared magic-item registry, YAML/section/stack registration, matching, fingerprinting, inventory updating, and soulbound/expiration enforcement belong in **SneakyItems**, not SneakyUtils.
+Plugin feature managers, protocol/proxy messaging, PocketBase clients, MagicSpells spell/config domain types, and one-off helpers with a single consumer stay in that plugin until a second real consumer appears. Shared magic-item registry, YAML/section/stack registration, matching, fingerprinting, inventory updating, and soulbound/expiration enforcement belong in **SneakyItems**, not SneakyUtils.

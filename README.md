@@ -16,14 +16,14 @@ Shared Team-Sneakymouse / rawb.tv development policy and an agent-assisted devel
 - [Efficiency-review skill](skills/efficiency-review/SKILL.md): optional Minecraft/Paper and JVM hot-path reviews; load only when relevant; not installed by this repository.
 - [SneakySlideDecks authoring skill](skills/sneakyslidedecks-authoring/SKILL.md): optional; illustrated slide decks built locally to a PDF whose art and colours are all Minecraft map colours, for SneakySlideDecks map screens; not installed by this repository.
 - [Adapter design](adapters/README.md): discovery adapters and sibling-checkout source of truth.
-- [Installer design](installer/DESIGN.md): pointer + bootstrap enrollment; no executable installer yet.
+- [Installer design](installer/DESIGN.md): pointer + bootstrap enrollment; `installer/sync-stubs.ps1` rewrites the stubs in enrolled projects (dry run by default).
 - [Project context example](examples/project-context.md): local facts, not duplicated team policy.
 - [Review scenarios](review/scenarios.md): human/agent behavioral acceptance checks.
 - [Approval checklist](review/approval.md): pilot vs general enrollment gates.
 
 ## Boundaries
 
-This contribution is documentation and inert adapter examples only. Nothing is installed into developer memory, org Hermes profiles, or plugin repositories. No runtime agent tests or cross-platform installer tests have been performed. No upstream skills are copied; licensing and skill selection remain review items. No license is selected yet: do not assume permission for external redistribution.
+Enrolled plugin repositories carry `.team-policy/pointer.json` and the bootstrap stubs from `adapters/examples/`, written by `installer/sync-stubs.ps1`. Nothing is installed into developer memory or org Hermes profiles. No runtime agent tests or cross-platform installer tests have been performed. No upstream skills are copied; licensing and skill selection remain review items. No license is selected yet: do not assume permission for external redistribution.
 
 **Agent status**
 
