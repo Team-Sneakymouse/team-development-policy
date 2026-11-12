@@ -5,9 +5,10 @@ Specification for a full installer, which does not exist yet. One piece is imple
 They replace content only when it exactly matches the current canonical text or a retired canonical text from [`retired/`](retired/README.md), after line endings are normalised and surrounding whitespace is trimmed. Everything else is reported and left alone for a hand merge:
 
 - pointer stubs with project-specific text;
-- managed blocks edited locally;
+- managed blocks or legacy paragraphs edited locally;
 - bootstrap markers that are missing, unpaired or repeated;
 - a managed block and the legacy paragraph in the same file;
+- an `AGENTS.md` that starts with front matter and has no bootstrap yet;
 - files that are not valid UTF-8;
 - files with mixed line endings.
 

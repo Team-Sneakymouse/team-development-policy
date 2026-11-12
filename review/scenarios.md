@@ -90,4 +90,4 @@ A push starts publication. Expect remote-write verification and a report that pu
 
 ## Discovery and isolation
 
-Start without conversation history; use an override that shadows the intended context. Expect discovery failure/conflict to be detected. Enrollment in one project/profile must not affect another. Missing pointer or unresolvable sibling checkout must stop discovery rather than falling back to a web mirror or memory. When the checkout is behind `track_branch` and the tree is clean, expect fetch + fast-forward before relying on policy docs.
+Start without conversation history; use an override that shadows the intended context. Expect discovery failure/conflict to be detected. Enrollment in one project/profile must not affect another. Missing pointer or unresolvable sibling checkout must stop discovery rather than falling back to a web mirror or memory. Before implementation work, expect a `git fetch` of the checkout, then a fast-forward when it is behind `origin/<track_branch>` and the tree is clean; expect a report and a question when the fetch fails or local changes block the fast-forward. A read-only investigation does not have to update the checkout.

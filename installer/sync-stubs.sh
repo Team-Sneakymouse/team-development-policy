@@ -22,8 +22,9 @@
 #   the existing file is a known pointer stub. Copilot and Cursor stubs are not created
 #   where a project has none.
 # Everything else is reported with a warning and left alone: custom stubs, locally edited
-# managed blocks, missing/unpaired/repeated markers, a managed block next to the legacy
-# paragraphs, files that are not valid UTF-8, and files with mixed line endings.
+# managed blocks or legacy paragraphs, missing/unpaired/repeated markers, a managed block
+# next to the legacy paragraphs, an AGENTS.md that starts with front matter and has no
+# bootstrap yet, files that are not valid UTF-8, and files with mixed line endings.
 # Line endings and a UTF-8 BOM of an existing file are kept; new files follow AGENTS.md.
 # Matching is case-sensitive.
 #
@@ -145,22 +146,29 @@ my @stubs = (
 my $begin_marker = "<!-- BEGIN TEAM-POLICY MANAGED BOOTSTRAP -->";
 my $end_marker   = "<!-- END TEAM-POLICY MANAGED BOOTSTRAP -->";
 # A leading H1, allowing only blank lines and complete HTML comments before it.
-my $leading_h1 = qr/\A(?:[ \t]*\n|[ \t]*<!--(?:(?!-->).)*-->[ \t]*\n)*# [^\n]*\n/s;
+my $leading_h1 = qr/\A(?:[ \t]*\n|[ \t]*<!--(?:(?!-->).)*-->[ \t]*\n)*# [^\n]*(?:\n|\z)/s;
+# Wording of the legacy bootstrap paragraphs. Where it is left once the exact legacy texts
+# are taken out, the paragraphs were edited locally. Has no match in any canonical block.
+my $legacy_wording = qr/resolve shared policy using|read the resolved checkout\x27s/i;
 
 # Decides what to do with an AGENTS.md text: returns new (and what) or warn.
 sub plan_agents {
     my ($old) = @_;
     my $begins = count_of($old, $begin_marker);
     my $ends = count_of($old, $end_marker);
-    my ($legacy_count, $legacy_hit) = (0, undef);
-    for my $l (@legacy_texts) { my $n = count_of($old, $l); if ($n) { $legacy_count += $n; $legacy_hit = $l } }
+    my ($legacy_count, $legacy_hit, $others) = (0, undef, $old);
+    for my $l (@legacy_texts) {
+        my $n = count_of($old, $l);
+        if ($n) { $legacy_count += $n; $legacy_hit = $l; $others =~ s/\Q$l\E//g }
+    }
+    my $legacy_edited = $others =~ $legacy_wording;
 
     if ($begins || $ends) {
         my $bi = index($old, $begin_marker);
         my $ei = index($old, $end_marker);
         return { warn => "bootstrap markers missing, unpaired or repeated; left alone" }
             if $begins != 1 || $ends != 1 || $ei < $bi;
-        return { warn => "managed block and legacy bootstrap both present; left alone" } if $legacy_count;
+        return { warn => "managed block and legacy bootstrap both present; left alone" } if $legacy_count || $legacy_edited;
         my $after = $ei + length $end_marker;
         my $cur = substr($old, $bi, $after - $bi);
         return { new => $old } if $cur eq $block;
@@ -169,16 +177,20 @@ sub plan_agents {
         }
         return { warn => "managed block edited locally; left alone, merge by hand" };
     }
+    return { warn => "legacy bootstrap edited locally; left alone, merge by hand" } if $legacy_edited;
     return { warn => "legacy bootstrap present more than once; left alone" } if $legacy_count > 1;
     if ($legacy_count == 1) {
         my $i = index($old, $legacy_hit);
         return { new => substr($old, 0, $i) . $block . substr($old, $i + length $legacy_hit), what => "replace legacy short bootstrap" };
     }
+    return { warn => "front matter and no bootstrap block; left alone, add the block by hand" } if $old =~ /\A---[ \t]*\n/;
     if ($old =~ $leading_h1) {
         my $len = $+[0];
+        my $head = substr($old, 0, $len);
+        $head .= "\n" unless $head =~ /\n\z/;
         my $rest = substr($old, $len);
         my $gap = (length $rest && substr($rest, 0, 1) ne "\n") ? "\n\n" : "\n";
-        return { new => substr($old, 0, $len) . "\n" . $block . $gap . $rest, what => "insert block after heading" };
+        return { new => $head . "\n" . $block . $gap . $rest, what => "insert block after heading" };
     }
     if ($old =~ /^# /m) {
         (my $body = $old) =~ s/\A\n+//;

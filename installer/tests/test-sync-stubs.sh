@@ -71,7 +71,28 @@ printf '# P\n\n%s\n\nLocal facts.\n' "$block" | want legacy AGENTS.md
 # Finding 7: text between the two legacy paragraphs is never deleted.
 project legacy-split
 printf '# P\n\n%s\n\nKEEP ME\n\n%s\n' "$legacy_1" "$legacy_2" | given legacy-split AGENTS.md
-printf '# P\n\n%s\n\n%s\n\nKEEP ME\n\n%s\n' "$block" "$legacy_1" "$legacy_2" | want legacy-split AGENTS.md
+warns legacy-split AGENTS.md 'legacy bootstrap edited locally; left alone, merge by hand'
+
+# Legacy paragraphs that were edited are not left behind next to a new block.
+project legacy-reworded
+printf '# P\n\n%s\n\nLocal facts.\n' "${legacy/when safe/when safe (never on Fridays)}" | given legacy-reworded AGENTS.md
+warns legacy-reworded AGENTS.md 'legacy bootstrap edited locally; left alone, merge by hand'
+
+project legacy-other-case
+printf '# P\n\n%s\n' "${legacy/Resolve shared policy/First, resolve shared policy}" | given legacy-other-case AGENTS.md
+warns legacy-other-case AGENTS.md 'legacy bootstrap edited locally; left alone, merge by hand'
+
+project legacy-second-only
+printf '# P\n\n%s\n' "$legacy_2" | given legacy-second-only AGENTS.md
+warns legacy-second-only AGENTS.md 'legacy bootstrap edited locally; left alone, merge by hand'
+
+project legacy-and-reworded
+printf '# P\n\n%s\n\n%s\n' "$legacy" "${legacy/when safe/when it is safe}" | given legacy-and-reworded AGENTS.md
+warns legacy-and-reworded AGENTS.md 'legacy bootstrap edited locally; left alone, merge by hand'
+
+project block-and-reworded-legacy
+printf '# P\n\n%s\n\n%s\n' "$block" "${legacy/when safe/when it is safe}" | given block-and-reworded-legacy AGENTS.md
+warns block-and-reworded-legacy AGENTS.md 'managed block and legacy bootstrap both present; left alone'
 
 project legacy-crlf
 printf '# P\n\n%s\n\nLocal facts.\n' "$legacy" | crlf | given legacy-crlf AGENTS.md
@@ -114,6 +135,19 @@ printf '<!-- generated -->\n# P\n\n%s\n\nBody.\n' "$block" | want heading-after-
 project heading-after-blank
 printf '\n# P\n\nBody.\n' | given heading-after-blank AGENTS.md
 printf '\n# P\n\n%s\n\nBody.\n' "$block" | want heading-after-blank AGENTS.md
+
+project heading-no-newline
+printf '# P' | given heading-no-newline AGENTS.md
+printf '# P\n\n%s\n' "$block" | want heading-no-newline AGENTS.md
+
+# The block is never put above front matter.
+project front-matter
+printf -- '---\ntitle: P\n---\n\n# P\n\nBody.\n' | given front-matter AGENTS.md
+warns front-matter AGENTS.md 'front matter and no bootstrap block; left alone, add the block by hand'
+
+project front-matter-with-block
+printf -- '---\ntitle: P\n---\n\n# P\n\n%s\n' "$old_block" | given front-matter-with-block AGENTS.md
+printf -- '---\ntitle: P\n---\n\n# P\n\n%s\n' "$block" | want front-matter-with-block AGENTS.md
 
 project heading-later
 printf '## Notes\n\nText.\n\n# P\n' | given heading-later AGENTS.md

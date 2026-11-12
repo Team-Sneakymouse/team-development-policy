@@ -22,8 +22,9 @@
     the existing file is a known pointer stub. Copilot and Cursor stubs are not created
     where a project has none.
   Everything else is reported with a warning and left alone: custom stubs, locally edited
-  managed blocks, missing/unpaired/repeated markers, a managed block next to the legacy
-  paragraphs, files that are not valid UTF-8, and files with mixed line endings.
+  managed blocks or legacy paragraphs, missing/unpaired/repeated markers, a managed block
+  next to the legacy paragraphs, an AGENTS.md that starts with front matter and has no
+  bootstrap yet, files that are not valid UTF-8, and files with mixed line endings.
   Line endings and a UTF-8 BOM of an existing file are kept; new files follow AGENTS.md.
   Matching is case-sensitive. sync-stubs.sh is the bash twin of this script (same decisions
   and output); installer/tests/test-sync-stubs.sh checks that they agree.
@@ -85,20 +86,29 @@ $beginMarker = '<!-- BEGIN TEAM-POLICY MANAGED BOOTSTRAP -->'
 $endMarker   = '<!-- END TEAM-POLICY MANAGED BOOTSTRAP -->'
 $ordinal = [System.StringComparison]::Ordinal
 # A leading H1, allowing only blank lines and complete HTML comments before it.
-$leadingH1Rx = '\A(?:[ \t]*\n|[ \t]*<!--(?:(?!-->).)*-->[ \t]*\n)*# [^\n]*\n'
+$leadingH1Rx = '\A(?:[ \t]*\n|[ \t]*<!--(?:(?!-->).)*-->[ \t]*\n)*# [^\n]*(?:\n|\z)'
+# Wording of the legacy bootstrap paragraphs. Where it is left once the exact legacy texts
+# are taken out, the paragraphs were edited locally. Has no match in any canonical block.
+$legacyWordingRx = New-Object System.Text.RegularExpressions.Regex(
+    'resolve shared policy using|read the resolved checkout\x27s',
+    ([System.Text.RegularExpressions.RegexOptions]'IgnoreCase, CultureInvariant'))
 
 # Decides what to do with an AGENTS.md text: returns New (and What) or Warn.
 function Plan-Agents([string]$old) {
     $begins = Count-Of $old $beginMarker
     $ends = Count-Of $old $endMarker
-    $legacyCount = 0; $legacyHit = $null
-    foreach ($l in $legacyTexts) { $n = Count-Of $old $l; if ($n -gt 0) { $legacyCount += $n; $legacyHit = $l } }
+    $legacyCount = 0; $legacyHit = $null; $others = $old
+    foreach ($l in $legacyTexts) {
+        $n = Count-Of $old $l
+        if ($n -gt 0) { $legacyCount += $n; $legacyHit = $l; $others = $others.Replace($l, '') }
+    }
+    $legacyEdited = $legacyWordingRx.IsMatch($others)
 
     if ($begins -gt 0 -or $ends -gt 0) {
         $bi = $old.IndexOf($beginMarker, $ordinal)
         $ei = $old.IndexOf($endMarker, $ordinal)
         if ($begins -ne 1 -or $ends -ne 1 -or $ei -lt $bi) { return @{ Warn = 'bootstrap markers missing, unpaired or repeated; left alone' } }
-        if ($legacyCount -gt 0) { return @{ Warn = 'managed block and legacy bootstrap both present; left alone' } }
+        if ($legacyCount -gt 0 -or $legacyEdited) { return @{ Warn = 'managed block and legacy bootstrap both present; left alone' } }
         $after = $ei + $endMarker.Length
         $cur = $old.Substring($bi, $after - $bi)
         if ($cur -ceq $block) { return @{ New = $old } }
@@ -107,16 +117,20 @@ function Plan-Agents([string]$old) {
         }
         return @{ Warn = 'managed block edited locally; left alone, merge by hand' }
     }
+    if ($legacyEdited) { return @{ Warn = 'legacy bootstrap edited locally; left alone, merge by hand' } }
     if ($legacyCount -gt 1) { return @{ Warn = 'legacy bootstrap present more than once; left alone' } }
     if ($legacyCount -eq 1) {
         $i = $old.IndexOf($legacyHit, $ordinal)
         return @{ New = $old.Substring(0, $i) + $block + $old.Substring($i + $legacyHit.Length); What = 'replace legacy short bootstrap' }
     }
+    if ($old -cmatch '\A---[ \t]*\n') { return @{ Warn = 'front matter and no bootstrap block; left alone, add the block by hand' } }
     $m = [regex]::Match($old, $leadingH1Rx, [System.Text.RegularExpressions.RegexOptions]::Singleline)
     if ($m.Success) {
+        $head = $old.Substring(0, $m.Length)
+        if (-not $head.EndsWith("`n", $ordinal)) { $head += "`n" }
         $rest = $old.Substring($m.Length)
         $gap = if ($rest.Length -gt 0 -and -not $rest.StartsWith("`n", $ordinal)) { "`n`n" } else { "`n" }
-        return @{ New = $old.Substring(0, $m.Length) + "`n" + $block + $gap + $rest; What = 'insert block after heading' }
+        return @{ New = $head + "`n" + $block + $gap + $rest; What = 'insert block after heading' }
     }
     if ($old -cmatch '(?m)^# ') {
         return @{ New = $block + "`n`n" + ($old -creplace '\A\n+', ''); What = 'insert block at top' }
