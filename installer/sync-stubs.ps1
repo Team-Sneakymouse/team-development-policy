@@ -18,7 +18,8 @@
   - CLAUDE.md, .github/copilot-instructions.md, .cursor/rules/team-policy.mdc: replaced when
     the existing file is a short pointer stub. Any other existing file is reported and left
     alone. Copilot and Cursor stubs are not created where a project has none.
-  Line endings of an existing file are kept; new files follow AGENTS.md.
+  Line endings of an existing file are kept; new files follow AGENTS.md. Matching is
+  case-sensitive. sync-stubs.sh is the bash twin of this script (same decisions and output).
 
 .EXAMPLE
   ./installer/sync-stubs.ps1                         # dry run over every enrolled project
@@ -39,7 +40,7 @@ function Read-Text([string]$path) { [System.IO.File]::ReadAllText($path, $utf8) 
 function To-Lf([string]$text) { $text -replace "`r`n", "`n" }
 
 $bootstrapDoc = To-Lf (Read-Text (Join-Path $examples 'bootstrap.md'))
-if ($bootstrapDoc -notmatch '(?s)```markdown\n(.*?)\n```') { throw "No fenced markdown block in adapters/examples/bootstrap.md" }
+if ($bootstrapDoc -cnotmatch '(?s)```markdown\n(.*?)\n```') { throw "No fenced markdown block in adapters/examples/bootstrap.md" }
 $block = $Matches[1].Trim()
 
 $stubs = [ordered]@{
@@ -91,16 +92,16 @@ foreach ($proj in Get-Projects) {
         $old = "# Agent instructions`n"
     }
     $evaluator = [System.Text.RegularExpressions.MatchEvaluator] { param($m) $block }
-    if ($old -match $managedRx) {
+    if ($old -cmatch $managedRx) {
         $new = [regex]::Replace($old, $managedRx, $evaluator); $what = 'replace managed block'
-    } elseif ($old -match $legacyRx) {
+    } elseif ($old -cmatch $legacyRx) {
         $new = [regex]::Replace($old, $legacyRx, $evaluator); $what = 'replace legacy short bootstrap'
-    } elseif ($old -match '^# [^\n]*\n') {
-        $new = $old -replace '^(# [^\n]*\n)', ('$1' + "`n" + $block.Replace('$', '$$') + "`n"); $what = 'insert block after heading'
+    } elseif ($old -cmatch '^# [^\n]*\n') {
+        $new = $old -creplace '^(# [^\n]*\n)', ('$1' + "`n" + $block.Replace('$', '$$') + "`n"); $what = 'insert block after heading'
     } else {
         $new = "# Agent instructions`n`n$block`n`n$old"; $what = 'insert heading and block'
     }
-    if ($new -ne $old) { Save $agentsPath $new $eol $what; $changed++ }
+    if ($new -cne $old) { Save $agentsPath $new $eol $what; $changed++ }
 
     foreach ($rel in $stubs.Keys) {
         $path = Join-Path $proj $rel
@@ -110,8 +111,8 @@ foreach ($proj in Get-Projects) {
             $raw = Read-Text $path
             $fileEol = if ($raw -match "`r`n") { "`r`n" } else { "`n" }
             $cur = To-Lf $raw
-            if ($cur.TrimEnd() -eq $want.TrimEnd()) { continue }
-            if (($cur.TrimEnd() -split "`n").Count -gt 8 -or $cur -notmatch $stubRx) {
+            if ($cur.TrimEnd() -ceq $want.TrimEnd()) { continue }
+            if (($cur.TrimEnd() -split "`n").Count -gt 8 -or $cur -cnotmatch $stubRx) {
                 Write-Warning "  custom file left alone: $path"
                 continue
             }

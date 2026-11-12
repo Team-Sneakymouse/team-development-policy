@@ -1,6 +1,6 @@
 # Agent adapters
 
-`examples/` holds the canonical stub files for enrolled projects: the managed `AGENTS.md` block ([bootstrap](examples/bootstrap.md)), [`CLAUDE.md`](examples/CLAUDE.md), [Cursor rule](examples/cursor-rule.mdc), [Copilot instructions](examples/copilot-instructions.md), and [pointer](examples/pointer.json). Edit them here; [`installer/sync-stubs.ps1`](../installer/sync-stubs.ps1) writes them into projects. Nothing in this repository loads them.
+`examples/` holds the canonical stub files for enrolled projects: the managed `AGENTS.md` block ([bootstrap](examples/bootstrap.md)), [`CLAUDE.md`](examples/CLAUDE.md), [Cursor rule](examples/cursor-rule.mdc), [Copilot instructions](examples/copilot-instructions.md), and [pointer](examples/pointer.json). Edit them here; [`installer/sync-stubs.ps1`](../installer/sync-stubs.ps1) (Windows PowerShell) or [`sync-stubs.sh`](../installer/sync-stubs.sh) (bash: Linux, macOS, Git Bash) writes them into projects. Nothing in this repository loads them.
 
 Adapters translate discovery, not policy meaning. All agents should load the same policy documents from a resolved checkout of this repository, plus local project facts.
 

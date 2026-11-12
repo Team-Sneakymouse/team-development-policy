@@ -1,6 +1,6 @@
 # Team-policy bootstrap (canonical)
 
-The managed block every enrolled project's `AGENTS.md` carries. `installer/sync-stubs.ps1` writes it between the markers; edit it here, not in the projects. Keep it thin: the policy README is the index.
+The managed block every enrolled project's `AGENTS.md` carries. `installer/sync-stubs.ps1` (or `sync-stubs.sh`) writes it between the markers; edit it here, not in the projects. Keep it thin: the policy README is the index.
 
 ```markdown
 <!-- BEGIN TEAM-POLICY MANAGED BOOTSTRAP -->
