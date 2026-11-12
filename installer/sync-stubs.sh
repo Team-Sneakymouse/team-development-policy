@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Writes the canonical team-policy stubs from adapters/examples/ into enrolled projects.
 # Bash twin of sync-stubs.ps1: same decisions, same file contents, same report.
+# installer/tests/test-sync-stubs.sh checks that the two agree.
 #
 # Dry run by default (see installer/DESIGN.md): it prints what it would change and writes
 # nothing. Pass --apply to write. It never commits, fetches, pushes, or touches pointer.json.
@@ -9,16 +10,23 @@
 # and two levels below --root (so nested workspace repos such as
 # MagicSpells-Workspace/MagicSpells are found), or taken from --project.
 #
+# Content is replaced only when it matches the current canonical text or a retired one from
+# installer/retired/ exactly (line endings normalised, surrounding whitespace trimmed).
 # For each enrolled project:
-# - AGENTS.md: replaces the block between the TEAM-POLICY MANAGED BOOTSTRAP markers, or the
-#   legacy short bootstrap paragraph ("Resolve shared policy using ..."), with the canonical
-#   block. If neither is present, inserts the block after the first heading.
+# - AGENTS.md: replaces a managed block (between the TEAM-POLICY MANAGED BOOTSTRAP markers)
+#   or the legacy bootstrap paragraphs with the canonical block. If neither is present,
+#   inserts the block after a leading H1 heading, or at the top when the file has an H1
+#   further down, or under a new "# Agent instructions" heading.
 # - CLAUDE.md: created when missing (Claude Code reads CLAUDE.md, not AGENTS.md).
 # - CLAUDE.md, .github/copilot-instructions.md, .cursor/rules/team-policy.mdc: replaced when
-#   the existing file is a short pointer stub. Any other existing file is reported and left
-#   alone. Copilot and Cursor stubs are not created where a project has none.
-# Line endings of an existing file are kept; new files follow AGENTS.md. Files are written
-# as UTF-8 without a BOM.
+#   the existing file is a known pointer stub. Copilot and Cursor stubs are not created
+#   where a project has none.
+# Everything else is reported with a warning and left alone: custom stubs, locally edited
+# managed blocks or legacy paragraphs, missing/unpaired/repeated markers, a managed block
+# next to the legacy paragraphs, an AGENTS.md that starts with front matter and has no
+# bootstrap yet, files that are not valid UTF-8, and files with mixed line endings.
+# Line endings and a UTF-8 BOM of an existing file are kept; new files follow AGENTS.md.
+# Matching is case-sensitive.
 #
 # Needs bash 3.2+ and perl 5 (both ship with macOS, Git for Windows and most Linux
 # distributions). No GNU-only tool flags.
@@ -53,25 +61,6 @@ while [ $# -gt 0 ]; do
     esac
     shift
 done
-
-examples="$here/../adapters/examples"
-tmp=$(mktemp -d 2>/dev/null || mktemp -d -t sync-stubs)
-trap 'rm -rf "$tmp"' EXIT
-
-# Print a file with a leading UTF-8 BOM removed and CRLF turned into LF.
-to_lf() { perl -0777 -pe 's/\A\xEF\xBB\xBF//; s/\r\n/\n/g' "$1"; }
-
-# Succeed when the file contains a CRLF.
-has_crlf() { perl -e 'local $/; my $t = <>; exit((defined $t && $t =~ /\r\n/) ? 0 : 1)' "$1"; }
-
-to_lf "$examples/bootstrap.md" | perl -e '
-    local $/; my $doc = <STDIN>;
-    $doc =~ /```markdown\n(.*?)\n```/s or die "No fenced markdown block in adapters/examples/bootstrap.md\n";
-    my $block = $1; $block =~ s/\A\s+//; $block =~ s/\s+\z//; print $block;' > "$tmp/block"
-
-stub_rels=("CLAUDE.md" ".github/copilot-instructions.md" ".cursor/rules/team-policy.mdc")
-stub_srcs=("CLAUDE.md" "copilot-instructions.md" "cursor-rule.mdc")
-for i in 0 1 2; do to_lf "$examples/${stub_srcs[$i]}" > "$tmp/want.$i"; done
 
 # Projects in the same order as the PowerShell script: first level, then second level per
 # first-level folder, each sorted case-insensitively.
@@ -108,81 +97,169 @@ EOF
     done
 fi
 
-save() {  # target lf-content-file eol what
-    local verb='would write'
-    [ "$apply" -eq 1 ] && verb='wrote'
-    echo "  $verb $1 ($4)"
-    [ "$apply" -eq 1 ] || return 0
-    mkdir -p "$(dirname "$1")"
-    if [ "$3" = crlf ]; then perl -pe 's/\n/\r\n/g' "$2" > "$1"; else cat "$2" > "$1"; fi
+# The decisions mirror sync-stubs.ps1 step by step; keep the two in sync.
+exec perl -e '
+use strict; use warnings;
+use Encode ();
+use File::Path qw(make_path);
+$| = 1;
+
+my ($apply, $examples, $retired, @projects) = @ARGV;
+
+sub slurp { my ($p) = @_; open my $f, "<:raw", $p or die "$p: $!\n"; local $/; my $t = <$f>; defined $t ? $t : "" }
+sub to_lf { my ($t) = @_; $t =~ s/\r\n/\n/g; $t }
+sub trim_ws { my ($t) = @_; $t =~ s/\A[ \t\r\n\f\x0B]+//; $t =~ s/[ \t\r\n\f\x0B]+\z//; $t }
+sub canonical { my $t = slurp($_[0]); $t =~ s/\A\xEF\xBB\xBF//; trim_ws(to_lf($t)) }
+sub read_retired {
+    my $d = "$retired/$_[0]";
+    opendir my $h, $d or die "$d: $!\n";
+    my @names = sort grep { -f "$d/$_" } readdir $h;
+    map { canonical("$d/$_") } @names;
+}
+sub count_of { my ($text, $needle) = @_; my $n = () = $text =~ /\Q$needle\E/g; $n }
+
+# Reads a project file. problem is set instead of text when it cannot be edited safely.
+sub read_doc {
+    my $raw = slurp($_[0]);
+    my $bom = ($raw =~ s/\A\xEF\xBB\xBF//) ? 1 : 0;
+    my $copy = $raw;
+    return { problem => "not valid UTF-8; left alone" }
+        unless eval { Encode::decode("UTF-8", $copy, Encode::FB_CROAK); 1 };
+    my $crlf = () = $raw =~ /\r\n/g;
+    my $lf = () = $raw =~ /(?<!\r)\n/g;
+    return { problem => "mixed line endings; left alone" } if $crlf && $lf;
+    return { text => to_lf($raw), eol => ($crlf ? "\r\n" : "\n"), bom => $bom };
 }
 
-changed=0
-for proj in ${projects[@]+"${projects[@]}"}; do
-    if [ ! -e "$proj/.team-policy/pointer.json" ]; then
-        echo "WARNING: $proj has no .team-policy/pointer.json; skipped" >&2
-        continue
-    fi
-    echo "$proj"
-    before=$changed
+my $doc = to_lf(slurp("$examples/bootstrap.md"));
+$doc =~ /```markdown\n(.*?)\n```/s or die "No fenced markdown block in adapters/examples/bootstrap.md\n";
+my $block = trim_ws($1);
+my @retired_blocks = read_retired("bootstrap");
+my @legacy_texts = read_retired("legacy-bootstrap");
 
-    agents="$proj/AGENTS.md"
-    eol=lf
-    if [ -e "$agents" ]; then
-        if has_crlf "$agents"; then eol=crlf; fi
-        to_lf "$agents" > "$tmp/old"
-    else
-        printf '# Agent instructions\n' > "$tmp/old"
-    fi
-    what=$(BLOCK="$tmp/block" OUT="$tmp/new" perl -e '
-        local $/;
-        open my $b, "<", $ENV{BLOCK} or die "$ENV{BLOCK}: $!\n"; my $block = <$b>;
-        my $old = <STDIN>; $old = "" unless defined $old;
-        my $managed = qr/<!-- BEGIN TEAM-POLICY MANAGED BOOTSTRAP -->.*?<!-- END TEAM-POLICY MANAGED BOOTSTRAP -->/s;
-        my $legacy = qr/Resolve shared policy using `\.team-policy\/pointer\.json`.*?follow its linked guidance relevant to the task\./s;
-        my ($new, $what) = ($old);
-        if    ($old =~ $managed)         { $new =~ s/$managed/$block/g; $what = "replace managed block" }
-        elsif ($old =~ $legacy)          { $new =~ s/$legacy/$block/g;  $what = "replace legacy short bootstrap" }
-        elsif ($old =~ /\A# [^\n]*\n/)   { $new =~ s/\A(# [^\n]*\n)/$1\n$block\n/; $what = "insert block after heading" }
-        else                             { $new = "# Agent instructions\n\n$block\n\n$old"; $what = "insert heading and block" }
-        open my $o, ">", $ENV{OUT} or die "$ENV{OUT}: $!\n"; print $o $new; close $o;
-        print $what;' < "$tmp/old")
-    if ! cmp -s "$tmp/old" "$tmp/new"; then
-        save "$agents" "$tmp/new" "$eol" "$what"
-        changed=$((changed + 1))
-    fi
+my @stubs = (
+    { rel => "CLAUDE.md",                       want => canonical("$examples/claude-code.md"),          retired => [read_retired("claude")] },
+    { rel => ".github/copilot-instructions.md", want => canonical("$examples/copilot-instructions.md"), retired => [read_retired("copilot")] },
+    { rel => ".cursor/rules/team-policy.mdc",   want => canonical("$examples/cursor-rule.mdc"),         retired => [read_retired("cursor")] },
+);
 
-    for i in 0 1 2; do
-        rel=${stub_rels[$i]}
-        path="$proj/$rel"
-        want="$tmp/want.$i"
-        file_eol=$eol
-        if [ -e "$path" ]; then
-            if has_crlf "$path"; then file_eol=crlf; else file_eol=lf; fi
-            to_lf "$path" > "$tmp/cur"
-            verdict=$(perl -e '
-                local $/;
-                open my $c, "<", $ARGV[0] or die; my $cur = <$c>;  $cur = ""  unless defined $cur;
-                open my $w, "<", $ARGV[1] or die; my $want = <$w>; $want = "" unless defined $want;
-                (my $ct = $cur) =~ s/\s+\z//; (my $wt = $want) =~ s/\s+\z//;
-                if ($ct eq $wt) { print "same"; exit }
-                my $lines = ($ct =~ tr/\n//) + 1;
-                my $stub = qr/\A(?:# Claude Code|Follow |\@AGENTS\.md|---\ndescription: "?(?:Team development policy|Candidate team policy))/;
-                print(($lines > 8 || $cur !~ $stub) ? "custom" : "stub");' "$tmp/cur" "$want")
-            case $verdict in
-                same) continue ;;
-                custom) echo "WARNING:   custom file left alone: $path" >&2; continue ;;
-            esac
-            save "$path" "$want" "$file_eol" 'replace pointer stub'
-        elif [ "$rel" = CLAUDE.md ]; then
-            save "$path" "$want" "$file_eol" 'create'
-        else
-            continue
-        fi
-        changed=$((changed + 1))
-    done
-    if [ "$changed" -eq "$before" ]; then echo '  up to date'; fi
-done
+my $begin_marker = "<!-- BEGIN TEAM-POLICY MANAGED BOOTSTRAP -->";
+my $end_marker   = "<!-- END TEAM-POLICY MANAGED BOOTSTRAP -->";
+# A leading H1, allowing only blank lines and complete HTML comments before it.
+my $leading_h1 = qr/\A(?:[ \t]*\n|[ \t]*<!--(?:(?!-->).)*-->[ \t]*\n)*# [^\n]*(?:\n|\z)/s;
+# Wording of the legacy bootstrap paragraphs. Where it is left once the exact legacy texts
+# are taken out, the paragraphs were edited locally. Has no match in any canonical block.
+my $legacy_wording = qr/resolve shared policy using|read the resolved checkout\x27s/i;
 
-if [ "$apply" -eq 1 ]; then mode='written'; else mode='to write (dry run; pass --apply to write)'; fi
-echo "$changed file(s) $mode."
+# Decides what to do with an AGENTS.md text: returns new (and what) or warn.
+sub plan_agents {
+    my ($old) = @_;
+    my $begins = count_of($old, $begin_marker);
+    my $ends = count_of($old, $end_marker);
+    my ($legacy_count, $legacy_hit, $others) = (0, undef, $old);
+    for my $l (@legacy_texts) {
+        my $n = count_of($old, $l);
+        if ($n) { $legacy_count += $n; $legacy_hit = $l; $others =~ s/\Q$l\E//g }
+    }
+    my $legacy_edited = $others =~ $legacy_wording;
+
+    if ($begins || $ends) {
+        my $bi = index($old, $begin_marker);
+        my $ei = index($old, $end_marker);
+        return { warn => "bootstrap markers missing, unpaired or repeated; left alone" }
+            if $begins != 1 || $ends != 1 || $ei < $bi;
+        return { warn => "managed block and legacy bootstrap both present; left alone" } if $legacy_count || $legacy_edited;
+        my $after = $ei + length $end_marker;
+        my $cur = substr($old, $bi, $after - $bi);
+        return { new => $old } if $cur eq $block;
+        if (grep { $_ eq $cur } @retired_blocks) {
+            return { new => substr($old, 0, $bi) . $block . substr($old, $after), what => "replace managed block" };
+        }
+        return { warn => "managed block edited locally; left alone, merge by hand" };
+    }
+    return { warn => "legacy bootstrap edited locally; left alone, merge by hand" } if $legacy_edited;
+    return { warn => "legacy bootstrap present more than once; left alone" } if $legacy_count > 1;
+    if ($legacy_count == 1) {
+        my $i = index($old, $legacy_hit);
+        return { new => substr($old, 0, $i) . $block . substr($old, $i + length $legacy_hit), what => "replace legacy short bootstrap" };
+    }
+    return { warn => "front matter and no bootstrap block; left alone, add the block by hand" } if $old =~ /\A---[ \t]*\n/;
+    if ($old =~ $leading_h1) {
+        my $len = $+[0];
+        my $head = substr($old, 0, $len);
+        $head .= "\n" unless $head =~ /\n\z/;
+        my $rest = substr($old, $len);
+        my $gap = (length $rest && substr($rest, 0, 1) ne "\n") ? "\n\n" : "\n";
+        return { new => $head . "\n" . $block . $gap . $rest, what => "insert block after heading" };
+    }
+    if ($old =~ /^# /m) {
+        (my $body = $old) =~ s/\A\n+//;
+        return { new => "$block\n\n$body", what => "insert block at top" };
+    }
+    return { new => "# Agent instructions\n\n$block\n", what => "insert heading and block" } if trim_ws($old) eq "";
+    return { new => "# Agent instructions\n\n$block\n\n$old", what => "insert heading and block" };
+}
+
+sub save {
+    my ($path, $lf_text, $eol, $bom, $what) = @_;
+    print "  ", ($apply ? "wrote" : "would write"), " $path ($what)\n";
+    return unless $apply;
+    (my $dir = $path) =~ s{/[^/]*\z}{};
+    make_path($dir) unless -d $dir;
+    (my $out = $lf_text) =~ s/\n/$eol/g;
+    $out = "\xEF\xBB\xBF$out" if $bom;
+    open my $f, ">:raw", $path or die "$path: $!\n";
+    print $f $out;
+    close $f or die "$path: $!\n";
+}
+
+sub warning { print STDERR "WARNING: $_[0]\n" }
+
+my $changed = 0;
+for my $proj (@projects) {
+    unless (-e "$proj/.team-policy/pointer.json") { warning("$proj has no .team-policy/pointer.json; skipped"); next }
+    print "$proj\n";
+    my $before = $changed;
+    my $warned = 0;
+
+    my $agents = "$proj/AGENTS.md";
+    my $eol = "\n";
+    if (-e $agents) {
+        my $d = read_doc($agents);
+        if ($d->{problem}) {
+            warning("  $d->{problem}: $agents"); $warned = 1;
+        } else {
+            $eol = $d->{eol};
+            my $plan = plan_agents($d->{text});
+            if ($plan->{warn}) { warning("  $plan->{warn}: $agents"); $warned = 1 }
+            elsif ($plan->{new} ne $d->{text}) { save($agents, $plan->{new}, $eol, $d->{bom}, $plan->{what}); $changed++ }
+        }
+    } else {
+        my $plan = plan_agents("# Agent instructions\n");
+        save($agents, $plan->{new}, $eol, 0, "create"); $changed++;
+    }
+
+    for my $s (@stubs) {
+        my $path = "$proj/$s->{rel}";
+        if (-e $path) {
+            my $d = read_doc($path);
+            if ($d->{problem}) { warning("  $d->{problem}: $path"); $warned = 1; next }
+            my $cur = trim_ws($d->{text});
+            next if $cur eq $s->{want};
+            unless (grep { $_ eq $cur } @{ $s->{retired} }) {
+                warning("  custom file left alone: $path"); $warned = 1;
+                next;
+            }
+            save($path, "$s->{want}\n", $d->{eol}, $d->{bom}, "replace pointer stub");
+        } elsif ($s->{rel} eq "CLAUDE.md") {
+            save($path, "$s->{want}\n", $eol, 0, "create");
+        } else {
+            next;
+        }
+        $changed++;
+    }
+    print "  up to date\n" if $changed == $before && !$warned;
+}
+
+print "$changed file(s) ", ($apply ? "written" : "to write (dry run; pass --apply to write)"), ".\n";
+' "$apply" "$here/../adapters/examples" "$here/retired" ${projects[@]+"${projects[@]}"}

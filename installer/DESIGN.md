@@ -2,6 +2,18 @@
 
 Specification for a full installer, which does not exist yet. One piece is implemented, as two equivalent scripts: [`sync-stubs.ps1`](sync-stubs.ps1) (Windows PowerShell 5.1+) and [`sync-stubs.sh`](sync-stubs.sh) (bash 3.2+ with perl 5) rewrite the managed bootstrap block and pointer stubs in projects that already have `.team-policy/pointer.json`, from the canonical files in `adapters/examples/`. Both make the same decisions and print the same report. They are a dry run unless given `-Apply` / `--apply`, and they never write pointers, commits, fetches, or pushes.
 
+They replace content only when it exactly matches the current canonical text or a retired canonical text from [`retired/`](retired/README.md), after line endings are normalised and surrounding whitespace is trimmed. Everything else is reported and left alone for a hand merge:
+
+- pointer stubs with project-specific text;
+- managed blocks or legacy paragraphs edited locally;
+- bootstrap markers that are missing, unpaired or repeated;
+- a managed block and the legacy paragraph in the same file;
+- an `AGENTS.md` that starts with front matter and has no bootstrap yet;
+- files that are not valid UTF-8;
+- files with mixed line endings.
+
+A file's line endings and UTF-8 byte-order mark are kept. [`tests/test-sync-stubs.sh`](tests/test-sync-stubs.sh) runs both scripts over the same fixtures and checks that they agree.
+
 ## Contract
 
 Input: selected agent(s), project(s), OS, and (for Hermes) profile; enrollment mode (default: sibling-checkout pointer). Default mode should be dry-run. Evaluation must never write to active profiles or real projects without explicit consent.
@@ -13,7 +25,7 @@ No network execution pipes that bypass the developer's Git credentials, credenti
 The installer writes `.team-policy/pointer.json` and a managed bootstrap block. Agents then:
 
 1. Resolve a local checkout from `local_candidates` or clone `remote`.
-2. Fast-forward `track_branch` when behind and safe.
+2. Fetch, then fast-forward `track_branch` when behind and safe.
 3. Read policy documents from that checkout.
 
 A committed file-snapshot payload (schema v1) remains an optional alternate for environments without a shared multi-repo folder.

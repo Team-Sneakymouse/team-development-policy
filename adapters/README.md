@@ -1,6 +1,8 @@
 # Agent adapters
 
-`examples/` holds the canonical stub files for enrolled projects: the managed `AGENTS.md` block ([bootstrap](examples/bootstrap.md)), [`CLAUDE.md`](examples/CLAUDE.md), [Cursor rule](examples/cursor-rule.mdc), [Copilot instructions](examples/copilot-instructions.md), and [pointer](examples/pointer.json). Edit them here; [`installer/sync-stubs.ps1`](../installer/sync-stubs.ps1) (Windows PowerShell) or [`sync-stubs.sh`](../installer/sync-stubs.sh) (bash: Linux, macOS, Git Bash) writes them into projects. Nothing in this repository loads them.
+`examples/` holds the canonical stub files for enrolled projects: the managed `AGENTS.md` block ([bootstrap](examples/bootstrap.md)), the `CLAUDE.md` stub ([`claude-code.md`](examples/claude-code.md)), [Cursor rule](examples/cursor-rule.mdc), [Copilot instructions](examples/copilot-instructions.md), and [pointer](examples/pointer.json). Edit them here; [`installer/sync-stubs.ps1`](../installer/sync-stubs.ps1) (Windows PowerShell) or [`sync-stubs.sh`](../installer/sync-stubs.sh) (bash: Linux, macOS, Git Bash) writes them into projects. Before changing one, copy its current text into [`installer/retired/`](../installer/retired/README.md) so the scripts still recognise projects that carry it.
+
+None of these files sits at a path an agent discovers on its own. The Claude stub is named `claude-code.md`, not `CLAUDE.md`, so Claude Code does not load it (and its `@AGENTS.md` import) when it reads files in `examples/`. The Cursor and Copilot stubs sit outside `.cursor/rules/` and `.github/`.
 
 Adapters translate discovery, not policy meaning. All agents should load the same policy documents from a resolved checkout of this repository, plus local project facts.
 
@@ -9,7 +11,7 @@ Adapters translate discovery, not policy meaning. All agents should load the sam
 Default enrollment mode: **sibling checkout**.
 
 - **Runtime:** agents resolve a local clone of `Team-Sneakymouse/team-development-policy` using `.team-policy/pointer.json` (`local_candidates`, then clone `remote` if missing). They read `policy/`, `workflows/`, and optional `skills/` from that checkout.
-- **Stay current:** before implementation work (not read-only investigation), fast-forward the checkout when it is clean and behind `origin/<track_branch>`. Do not invent policy from memory, a web mirror, or an unlisted path.
+- **Stay current:** before implementation work (not read-only investigation), `git fetch` the checkout, then fast-forward it when it is clean and behind `origin/<track_branch>`. Do not invent policy from memory, a web mirror, or an unlisted path.
 - **Track branch:** pilots track `main` of this repo. Pinning an immutable tag/commit remains available for locked evaluations; say so in the pointer if used.
 - **Optional alternate:** a committed project `.team-policy/` file snapshot (schema v1) for machines without a multi-repo workspace. Prefer the sibling pointer for LoM developer machines.
 
@@ -29,7 +31,7 @@ Candidate: project `.cursor/rules/team-policy.mdc` with `alwaysApply: true` poin
 
 ## Claude Code
 
-Project `CLAUDE.md` containing only `@AGENTS.md` ([example](examples/CLAUDE.md)). Claude Code imports the referenced file at session start, so the managed bootstrap and local facts live in `AGENTS.md` alone. **Design-scope only** until fresh-session validation succeeds.
+Project `CLAUDE.md` containing only `@AGENTS.md` ([example](examples/claude-code.md)). Claude Code imports the referenced file at session start, so the managed bootstrap and local facts live in `AGENTS.md` alone. **Design-scope only** until fresh-session validation succeeds.
 
 ## Antigravity
 
