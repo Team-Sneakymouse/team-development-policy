@@ -1,0 +1,2 @@
+# Shell scripts must keep LF endings so bash can run them from a Windows checkout.
+*.sh text eol=lf

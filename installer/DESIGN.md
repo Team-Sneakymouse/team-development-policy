@@ -1,6 +1,6 @@
 # Installation design
 
-Specification for a full installer, which does not exist yet. One piece is implemented: [`sync-stubs.ps1`](sync-stubs.ps1) rewrites the managed bootstrap block and pointer stubs in projects that already have `.team-policy/pointer.json`, from the canonical files in `adapters/examples/`. It is a dry run unless given `-Apply`, and it never writes pointers, commits, fetches, or pushes.
+Specification for a full installer, which does not exist yet. One piece is implemented, as two equivalent scripts: [`sync-stubs.ps1`](sync-stubs.ps1) (Windows PowerShell 5.1+) and [`sync-stubs.sh`](sync-stubs.sh) (bash 3.2+ with perl 5) rewrite the managed bootstrap block and pointer stubs in projects that already have `.team-policy/pointer.json`, from the canonical files in `adapters/examples/`. Both make the same decisions and print the same report. They are a dry run unless given `-Apply` / `--apply`, and they never write pointers, commits, fetches, or pushes.
 
 ## Contract
 
