@@ -46,7 +46,7 @@ Request: add a plugin menu of selectable icons (paging/confirm/options) that doe
 
 Request: add a player message or menu showing another player's name. Give the fixture different character and Minecraft names. Expect `PlayerUtil.getCharacterName(player)` on the server thread and the character name rendered as literal text, including in ordinary player command responses. After a character selection/rename, expect the next render to use the current name. Admin/moderation tools and command auto-completion may retain Minecraft names; these are the only output-category exceptions. Exercise missing/disabled SCM and missing/blank character names separately: expect the getter's built-in Minecraft-name fallback, not a custom bypass. Keep UUIDs and account-based lookup contracts unchanged. See [SneakyUtils](../policy/sneakyutils.md#player-facing-character-names).
 
-For the updated `PlayerUtil` API, also check missing/disabled PAPI and blank/unresolved noformat responses. Preserve provider output literally without local formatting fixes or recursive expansion. Migrated callers must compile against the renamed class; the two naming exceptions remain unchanged.
+Also check missing/disabled PAPI and blank/unresolved noformat responses. Preserve provider output literally without local formatting fixes or recursive expansion. Callers compile against `PlayerUtil` (no `PlayerNameUtils` references); the two naming exceptions apply as stated.
 
 ## Targeted and random player effects
 

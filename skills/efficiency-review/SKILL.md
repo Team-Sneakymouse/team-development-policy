@@ -87,15 +87,6 @@ Use an existing appropriate profiler (for example, an available server sampling 
 
 If no actionable finding is supported, say so and name unmeasured risks. Do not manufacture findings to fill a checklist.
 
-## Common pitfalls
-
-- Treating `getNearbyPlayers` or a typed result as proof of an early typed/indexed query.
-- Classifying by line count instead of workload and blast radius.
-- Recommending “make it async” without ownership, queue bounds, or stale-result fencing.
-- Assuming reduced display render distance removes every entity cost.
-- Replacing an exact spatial/recipient rule with a superficially cheaper but different one.
-- Expanding a review into implementation or new testing infrastructure without permission.
-
 ## Completion criteria
 
 - In-scope hot paths have cadence, candidate/fan-out, thread, and evidence classification.

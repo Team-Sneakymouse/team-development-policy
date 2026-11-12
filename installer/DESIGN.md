@@ -1,6 +1,6 @@
 # Installation design
 
-Specification only. No installer or runnable install commands exist yet.
+Specification for a full installer, which does not exist yet. One piece is implemented: [`sync-stubs.ps1`](sync-stubs.ps1) rewrites the managed bootstrap block and pointer stubs in projects that already have `.team-policy/pointer.json`, from the canonical files in `adapters/examples/`. It is a dry run unless given `-Apply`, and it never writes pointers, commits, fetches, or pushes.
 
 ## Contract
 

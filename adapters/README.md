@@ -1,6 +1,6 @@
 # Agent adapters
 
-Examples only; no files here are installed.
+`examples/` holds the canonical stub files for enrolled projects: the managed `AGENTS.md` block ([bootstrap](examples/bootstrap.md)), [`CLAUDE.md`](examples/CLAUDE.md), [Cursor rule](examples/cursor-rule.mdc), [Copilot instructions](examples/copilot-instructions.md), and [pointer](examples/pointer.json). Edit them here; [`installer/sync-stubs.ps1`](../installer/sync-stubs.ps1) writes them into projects. Nothing in this repository loads them.
 
 Adapters translate discovery, not policy meaning. All agents should load the same policy documents from a resolved checkout of this repository, plus local project facts.
 
@@ -9,11 +9,11 @@ Adapters translate discovery, not policy meaning. All agents should load the sam
 Default enrollment mode: **sibling checkout**.
 
 - **Runtime:** agents resolve a local clone of `Team-Sneakymouse/team-development-policy` using `.team-policy/pointer.json` (`local_candidates`, then clone `remote` if missing). They read `policy/`, `workflows/`, and optional `skills/` from that checkout.
-- **Stay current:** when the checkout exists but is behind `origin/<track_branch>`, fetch and fast-forward that branch when safe. Do not invent policy from memory, a web mirror, or an unlisted path.
+- **Stay current:** before implementation work (not read-only investigation), fast-forward the checkout when it is clean and behind `origin/<track_branch>`. Do not invent policy from memory, a web mirror, or an unlisted path.
 - **Track branch:** pilots track `main` of this repo. Pinning an immutable tag/commit remains available for locked evaluations; say so in the pointer if used.
 - **Optional alternate:** a committed project `.team-policy/` file snapshot (schema v1) for machines without a multi-repo workspace. Prefer the sibling pointer for LoM developer machines.
 
-[Bootstrap example](examples/bootstrap.md) is plain content for integration into native instruction files after enrollment. It is not itself an automatically discovered instruction file.
+Every native instruction file in a project is a pointer to `AGENTS.md`; the [bootstrap block](examples/bootstrap.md) and local facts live only there, so the pointers never describe content that can drift.
 
 ## Hermes
 
@@ -25,11 +25,11 @@ Candidate: repository `AGENTS.md` containing the bootstrap and local facts. Offi
 
 ## Cursor
 
-Candidate: project `.cursor/rules/team-policy.mdc` with `alwaysApply: true` pointing at `AGENTS.md` (which holds the managed bootstrap), or an inline bootstrap. [MDC example](examples/cursor-rule.mdc) is inert in this repository. Keep optional testing procedures conditional. Avoid installing both paths with duplicated/conflicting policy.
+Candidate: project `.cursor/rules/team-policy.mdc` with `alwaysApply: true` pointing at `AGENTS.md` (which holds the managed bootstrap), or an inline bootstrap. The [canonical rule](examples/cursor-rule.mdc) sits outside `.cursor/rules/`, so it is inert in this repository. Keep optional testing procedures conditional. Avoid installing both paths with duplicated/conflicting policy.
 
 ## Claude Code
 
-Candidate: project `CLAUDE.md` containing explicit read instructions for the resolved policy checkout and local facts. Native import syntax and user-level discovery need verification on selected versions; the adapter does not depend on an assumed cross-agent import syntax. Official memory documentation could not be retrieved during authoring (HTTP 403). **Design-scope only** until fresh-session validation succeeds.
+Project `CLAUDE.md` containing only `@AGENTS.md` ([example](examples/CLAUDE.md)). Claude Code imports the referenced file at session start, so the managed bootstrap and local facts live in `AGENTS.md` alone. **Design-scope only** until fresh-session validation succeeds.
 
 ## Antigravity
 
@@ -48,7 +48,7 @@ Provide the [plain bootstrap example](examples/bootstrap.md) as candidate conten
 - [Hermes context files](https://hermes-agent.nousresearch.com/docs/user-guide/features/context-files): retrieved during authoring; use live docs rather than older local skill summaries.
 - [Codex AGENTS.md](https://developers.openai.com/codex/guides/agents-md): retrieved during authoring.
 - [Cursor rules](https://cursor.com/docs/context/rules): retrieved during authoring.
-- [Claude Code memory](https://code.claude.com/docs/en/memory): retrieval blocked; validation pending.
+- [Claude Code memory](https://code.claude.com/docs/en/memory): `@path` imports in `CLAUDE.md`; fresh-session validation pending.
 - [Antigravity rules/workflows](https://antigravity.google/docs/rules-workflows): usable content unavailable; validation pending.
 
 Documentation lookup is not runtime proof. No adapter is conformance-verified yet. Product versions and developer OSes remain open review questions.

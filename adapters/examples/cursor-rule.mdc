@@ -1,8 +1,6 @@
 ---
-description: "Candidate team policy bootstrap"
+description: Team development policy — follow AGENTS.md
 alwaysApply: true
 ---
 
-This example is outside `.cursor/rules/` and must not be installed yet.
-
-Candidate body after enrollment: Follow [AGENTS.md](../../AGENTS.md). It includes the enrolled team-policy bootstrap (sibling checkout via `.team-policy/pointer.json`) and local facts. Read policy docs from the resolved checkout as that bootstrap directs. When host rules and team policy repeat the same norm, follow the host wording; surface only incompatible requirements.
+Follow [AGENTS.md](../../AGENTS.md). It holds this project's instructions, including the team-policy bootstrap.

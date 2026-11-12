@@ -1,15 +1,15 @@
-# Candidate team-policy bootstrap
+# Team-policy bootstrap (canonical)
 
-Managed bootstrap for enrolled projects (sibling-checkout mode). Keep this block thin; load further docs on branch.
+The managed block every enrolled project's `AGENTS.md` carries. `installer/sync-stubs.ps1` writes it between the markers; edit it here, not in the projects. Keep it thin: the policy README is the index.
 
-Candidate instruction body:
+```markdown
+<!-- BEGIN TEAM-POLICY MANAGED BOOTSTRAP -->
+This project follows the Team-Sneakymouse development policy, kept in a sibling checkout that `.team-policy/pointer.json` names.
 
-> This project is enrolled in Team-Sneakymouse development policy via a sibling checkout (see `.team-policy/pointer.json`).
->
-> Resolve the policy root: try each `local_candidates` path in the pointer relative to this project root. If none exist, `git clone` the pointer `remote` into the first candidate using the developer's existing Git credentials. If a checkout exists but is behind `origin/<track_branch>`, `git fetch` and fast-forward that branch when safe; if local edits block the update, report and ask.
->
-> Before implementing, review `<policy-root>/README.md` as the current policy index and load the linked guidance relevant to the task. At minimum, when authorization or risk is unclear, read `<policy-root>/policy/core.md`; read `<policy-root>/policy/scope-and-testing.md` when classifying risk or changing behavior; and read `<policy-root>/workflows/development.md` for nontrivial multi-step work. For substantial Paper features, persistent world state, or changes spanning components, read `<policy-root>/policy/paper-plugin-maintainability.md`. Read `<policy-root>/policy/sneakyutils.md` when adding or sharing Paper util/manager code. Load optional skills from `<policy-root>/skills/` only when relevant.
->
-> Do not substitute remembered rules, a web mirror, or an unlisted path. Follow local build/architecture facts and explicit exceptions. When host instructions and team policy repeat the same norm, follow the host wording. If they require incompatible actions, surface the conflict before expanding work. Distinguish running checks from implementing tests; a source edit does not automatically require a new test.
+The policy root is the first `local_candidates` path in the pointer, resolved from this project's root, that exists. If none exists, clone the pointer's `remote` into the first candidate with the developer's Git credentials and say so. Before implementation work (not for read-only investigation), fast-forward the checkout to `origin/<track_branch>` if it is behind and clean; if local changes block that, report it and ask.
 
-Resolve paths from the project root (or an adapter-generated absolute root), not from an arbitrary shell working directory.
+Before implementing, read `<policy-root>/README.md`. It is the policy index and says which documents apply to which kind of change. If the policy root can't be resolved or read, stop and report that instead of working from memory or another copy.
+
+Build commands, architecture facts and recorded local exceptions in this file are authoritative for this repository. Where this file and the policy require incompatible actions, say so before expanding the work. Running checks and writing tests are separate decisions: a source edit does not by itself require a new test.
+<!-- END TEAM-POLICY MANAGED BOOTSTRAP -->
+```
