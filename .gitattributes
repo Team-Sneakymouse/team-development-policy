@@ -1,2 +1,4 @@
-# Shell scripts must keep LF endings so bash can run them from a Windows checkout.
-*.sh text eol=lf
+# Store text as LF and check it out as LF on every OS.
+* text=auto eol=lf
+*.bat text eol=crlf
+*.cmd text eol=crlf
