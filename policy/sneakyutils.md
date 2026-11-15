@@ -20,6 +20,15 @@ Route all plugin-caused block damage (including destruction, removal, and damagi
 
 Use the manager's `apply(internalName, block, newDataOrMaterial, applyPhysics)` when it performs the change: it captures the current block data and state, applies the replacement, and registers a reversible change. If an external API performs the edit, capture the original `BlockData` and `BlockState` **before** mutation, then register that change with `register(internalName, block, fromData, fromState)`; `register` itself does not mutate the world. Event-driven damage must also be controlled so affected blocks are tracked, rather than allowing an untracked vanilla destruction path.
 
+Tag changes with what caused them, using the trailing cause argument of `apply` / `register` (MagicSpells spells: `block-causes`). Causes come from the fixed set in `com.sneakyutils.util.AlteredBlockCauses`; the manager rejects any other string:
+
+- `damage`: blocks broken, removed or spoiled (smashed windows, holes, cobwebs, graffiti).
+- `explosion`: damage from an explosion. Implies `damage`.
+- `fire`: damage from fire, including placed fire. Implies `damage`.
+- `decoration`: a temporary change that is not damage.
+
+Give a change only its most specific cause (`explosion`, not `explosion` and `damage`). Damage must carry `damage`, `explosion` or `fire`: the paladin wrench and SneakyPaladins' repair tools mend everything matching `damage`, so untagged damage cannot be mended. Temporary decoration carries `decoration`. Other temporary changes that fit none of the causes (an opened door, a moving platform) may stay untagged. Tools that undo by kind use the cause APIs (`getByCause`, `getBlocksInBoxByCause`, `undoAllByCause`, per-block `undoByCause` / `previewUndoByCause`), not lists of other features' internal names. If a new kind of change needs a cause outside the set, add it to `AlteredBlockCauses` in SneakyUtils rather than leaving the change untagged or reusing an ill-fitting one.
+
 Keep mutations and manager access on the server thread. Use feature-specific internal names and the shared `Change.undo(applyPhysics)` / `undoAll(internalName, applyPhysics)` APIs for restoration; consumer cleanup must not call global `restoreAll()` and undo unrelated plugins' changes. Preserve the shared marker/PDC recovery mechanism rather than replacing it with consumer-only timers or snapshots. Verify the required block-state recovery behavior against the actual manager support; do not assume every tile-state field is persisted. Missing support is a blocker to resolve in the shared manager, not an exemption permitting untracked temporary changes or a private restoration implementation.
 
 ## Placeholders
