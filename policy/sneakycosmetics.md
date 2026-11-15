@@ -21,7 +21,7 @@ If a cosmetic needs behavior SneakyCosmetics lacks (a new attachment point, a ne
 
 ## Cross-plugin API shape
 
-Every Team-Sneakymouse Kotlin plugin shades its own Kotlin stdlib, so a public API called by another plugin must not put **Kotlin types** in its signatures: no Kotlin function types (`(T) -> Unit`), no default arguments without `@JvmOverloads`, no reliance on `DefaultConstructorMarker`. Use `java.util.function.*`, explicit overloads, and Java-callable builders/`with` methods. Calls that pass Kotlin types between plugins fail at runtime with `LinkageError` even though they compile. Static entry points get `@JvmStatic`.
+Every Team-Sneakymouse Kotlin plugin shades its own Kotlin stdlib, so a public API called by another plugin must not put **Kotlin types** in its signatures: no Kotlin function types (`(T) -> Unit`), no default arguments without `@JvmOverloads`, no reliance on `DefaultConstructorMarker`. Use `java.util.function.*`, explicit overloads, and Java-callable builders/`with` methods. Calls that pass Kotlin types between plugins fail at runtime with `LinkageError` even though they compile. Static entry points get `@JvmStatic`. This is the general [cross-plugin API rule](./paper-plugin-maintainability.md#language-java-and-kotlin).
 
 Keep published signatures **binary compatible**: consumers are pinned to older versions while the server runs the newest SneakyCosmetics. Append parameters (never reorder), keep the old constructor/overloads, and when a method moves to a generic base class, redeclare it in the subclass so the old descriptor still exists. Check with `javap` against the compiled class.
 
