@@ -33,6 +33,18 @@ Choose evidence for the actual risk. Pure unit tests can cover state transitions
 - If reflection against private internals is the only practical option, document the dependency, the expected members/version assumptions, the user-visible fallback, and how incompatibility is reported. Keep failure bounded so an optional integration does not disable unrelated plugin behavior.
 - Treat a new hard dependency, API surface, or persisted cross-plugin format as a compatibility decision. Follow the repository's dependency and approval rules before broadening it.
 
+## Language: Java and Kotlin
+
+Both languages are first-class, and plugins that mix them (including shared plugins such as SneakyItems and SneakyUtils) are accepted as they are. Agents write either language well; choose by build cost, reviewability and who calls the code, not by preference.
+
+- **No rewrites to switch.** Do not convert a file, package or plugin from one language to the other just for consistency. Conversion is only in scope when that code is already being substantially rewritten for another reason, and then it goes in its own commit, separate from behaviour changes, so the diff can be reviewed as a translation.
+- **Match the surrounding code.** New code in an existing plugin uses the language of the package or module it joins. In a mixed plugin, follow the package (for example a Java `api/` package next to Kotlin internals).
+- **Don't add a second toolchain for one file.** Adding Kotlin to a pure-Java plugin (or Java sources to a pure-Kotlin plugin) is a build change, not a style choice. Do it only with a concrete reason (a Java-facing API, interop a language cannot express), and say so in the change.
+- **New plugins:** Kotlin is the default for internals (null safety catches agent mistakes at compile time; smaller diffs to review). Prefer Java when the plugin is mainly an integration point called from Java plugins such as MagicSpells.
+- **Cross-plugin APIs:** every Team-Sneakymouse Kotlin plugin shades its own Kotlin stdlib, so an API another plugin calls must be Java-callable without Kotlin types. Prefer a Java `api/` package (as in SneakyMail, SneakySendSound and SneakyPocketbase). A Kotlin API must not put Kotlin types in its signatures: no Kotlin function types (`(T) -> Unit`), no default arguments without `@JvmOverloads`, no reliance on `DefaultConstructorMarker`; use `java.util.function.*`, explicit overloads and Java-callable builders, and give static entry points `@JvmStatic`. Kotlin types passed between plugins compile but fail at runtime with `LinkageError`.
+- **Nullability at the boundary:** Java API types and methods annotate nullability so Kotlin callers get real nullable/non-null types instead of platform types. Kotlin code calling Bukkit/Paper or Java plugins treats unannotated returns as nullable unless documented otherwise.
+- **Coroutines don't change the thread rules.** Kotlin coroutines in a plugin must not touch Bukkit state off the main thread; return to it through the Bukkit scheduler (or a main-thread dispatcher built on it) and cancel coroutine scopes on disable/reload like any other task. See [Paper plugin conventions](./paper-conventions.md).
+
 ## Configuration changes
 
 For a substantial configuration change, review defaults, missing or invalid values, bounds, and reload behavior. Keep example/default configuration, parsing, and user documentation aligned where the repository maintains them separately. Prefer clear fallback behavior and actionable diagnostics for values operators can edit. A schema or validation framework is not required unless the project needs it.
