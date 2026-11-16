@@ -9,6 +9,7 @@ Agents in enrolled projects: read the documents below whose condition matches th
 **Every implementation task**
 
 - [Core policy](policy/core.md): scope, authorization forms, instruction conflicts, and evidence. Reread it whenever authorization or risk is unclear.
+- [With your next change](policy/next-change.md): small one-time migrations to apply to the repository together with the change you are making.
 
 **Read when the change…**
 
