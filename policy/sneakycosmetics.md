@@ -7,7 +7,7 @@ Load when a Paper plugin puts a **model on a player** that isn't in an equipment
 1. Wear it through SneakyCosmetics: `SneakyCosmetics.getBackItems()` for things turned with the **body** (back, waist), `SneakyCosmetics.getHeadItems()` for things turned and nodded with the **head** (hats, drawn like a head-slot item). Use a namespaced key of your plugin (`<plugin>:<thing>`).
 2. Call `wear` **once** when the player should start wearing it, and `takeOff` when they should stop (race change, a disguise/form that replaces it, reload/disable). Use `wears(uuid, key)` to check. Do not re-wear every tick and do not keep a parallel `UUID → ItemDisplay` map; `worn(player, key)` and `displays(key)` give you the entity for tags, diagnostics counts or tests.
 3. Express where it sits as a `Placement`. A pose tuned from the seat (top of the head) is `BackItems.Placement.fromSeat(transformation)`; per-variant model offsets/turns belong in that transformation. Keep operator-tunable numbers in your config and build the placement from them.
-4. Depend on it: `compileOnly("io.github.team-sneakymouse:sneakycosmetics:<published-version>")` (`isTransitive = false`) from `https://maven.sneakyrp.com/releases`, a hard runtime `depend` on plugin `SneakyCosmetics`, and stage it for `runServer` like other hard deps.
+4. Depend on it: `compileOnly("io.github.team-sneakymouse:sneakycosmetics:<published-version>")` (`isTransitive = false`) from `https://maven.sneakyrp.com/sneakymouse` ([Maven access](./maven-access.md)), a hard runtime `depend` on plugin `SneakyCosmetics`, and stage it for `runServer` like other hard deps.
 
 ## What SneakyCosmetics owns (do not reimplement)
 

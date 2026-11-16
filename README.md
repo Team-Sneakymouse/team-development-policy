@@ -13,6 +13,7 @@ Agents in enrolled projects: read the documents below whose condition matches th
 
 **Read when the change…**
 
+- …fails to build with 401 or 403 from `maven.sneakyrp.com`, adds a dependency on a team artifact, or adds a CI workflow that builds with Gradle: [Maven access](policy/maven-access.md) (how builds get their read token, what to do when it is missing, what never goes into a build file).
 - …changes behaviour, or you need to classify its risk or decide on checks and tests: [Scope and testing](policy/scope-and-testing.md) (proportional verification, risk examples, test implementation).
 - …is nontrivial or multi-step: [Development workflow](workflows/development.md) (lightweight stages, risk gates, nontrivial evidence shape).
 - …touches a Paper plugin at all: [Paper plugin conventions](policy/paper-conventions.md) (threads, reload, public hooks, stable ids, docs).

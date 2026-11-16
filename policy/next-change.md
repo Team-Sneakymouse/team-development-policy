@@ -19,7 +19,7 @@ Added 2026-11-16. The team's Maven repository for our own artifacts was renamed 
 ```
 
 - Change only the URL. Keep the publishing repository's name (`sneakyrp`) and its credentials block as they are.
-- Do not add read credentials to the build file. Credentials for reading the Maven server come from outside the repository: a Gradle init script on the developer machine and on the CI runners applies the Gradle properties `sneakyrpReadUsername` / `sneakyrpReadPassword` to every repository on `maven.sneakyrp.com`.
+- Do not add read credentials to the build file. Credentials for reading the Maven server come from outside the repository: a Gradle init script on the developer machine and on the CI runners applies the Gradle properties `sneakyrpReadUsername` / `sneakyrpReadPassword` to every repository on `maven.sneakyrp.com` (see [Maven access](./maven-access.md)).
 
 **Check:** `git grep -n "maven.sneakyrp.com/releases"` prints nothing, and `./gradlew build` still resolves the team's artifacts.
 
