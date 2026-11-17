@@ -51,7 +51,7 @@ New logic and reproducible bugs normally merit focused tests. When touching scor
 
 ## Scope boundaries
 
-- Do not create a new harness, mock architecture, suite-wide refactor, or unrelated coverage without approval.
+- Do not create a new harness, mock architecture, suite-wide refactor, or unrelated coverage without approval. The exception is the migration test that [Database migrations](./database-migrations.md#tests) requires with a plugin's first script.
 - Ask before verification would materially expand the task, require privileged resources, or incur significant unexpected time/cost. Ordinary relevant checks do not need repeated approval.
 - If the user says “no test changes,” keep test files unchanged. Use proportionate existing checks where appropriate and report the gap. For high-risk work, seek agreement on sufficient assurance rather than pretending the restriction makes the change safe.
 - If a repo currently mandates tests for every behavior change, surface the conflict. Adoption must deliberately replace conflicting rules; this policy does not bypass them.
