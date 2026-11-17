@@ -8,7 +8,9 @@ Plugins own their schema: each plugin ships numbered SQL scripts in its jar, and
 
 - Scripts live in the jar under `db/migrations/`, named `V<number>__<name>.sql` (`V001__init.sql`). Numbers start at 1 with no gaps. The plugin's schema version is its highest script number; there is no separate constant.
 - During enable, the plugin calls `SneakyDBProvider.getApi().migrate(IDENTIFIER, MyPlugin::class.java)` with its existing stable id constant, and does no work on its own tables until the returned future completes.
-- SneakyDB collects every plugin's scripts during enable and runs them after all plugins have registered, each script in its own transaction, recording them in one central table per database. Player logins are refused until that has finished, and stay refused when a script fails.
+- When that future fails, the plugin stays inert: it starts nothing that uses its tables and does not retry. SneakyDB does not disable the plugin or refuse its calls, so this is the plugin's own job. The server thread waits while migrations run, so the future's callback hands work to the scheduler and never blocks until the server thread has done something.
+- SneakyDB collects every plugin's scripts during enable and runs them after all plugins have registered, each script in its own transaction, recording them in one central table per database. The server does not finish starting, and accepts no players, until that has finished.
+- A script that fails while it runs stops the server, so errors don't compound. A problem found before any of a plugin's scripts ran (an order that can't be resolved, a jar older than the database, an edited script) fails only that plugin, and the server comes up in maintenance until an operator has fixed it.
 - There are three databases. Dev runs a script once the plugin is published and the dev server restarts, Staging once the plugin is accepted for the next release, and Live at the first restart of a release rollout.
 
 ## Writing a script
