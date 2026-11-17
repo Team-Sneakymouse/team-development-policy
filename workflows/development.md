@@ -18,12 +18,14 @@ Stages are thinking checkpoints, not mandatory artifacts or separate agents.
 
 ## Evidence for nontrivial work
 
-For nontrivial work, the final report (chat and, when opening a PR, the PR body) should include:
+For nontrivial work, the final chat report should include:
 
 - requested scope and risk tier
 - changed files
 - checks run and results
 - checks not run and why
 - remaining risks
+
+When opening a PR, write the PR body with the template in [Pull requests](../policy/pull-requests.md). It carries the same evidence, except the list of changed files.
 
 For a tiny mechanical task, a concise final message is enough.
