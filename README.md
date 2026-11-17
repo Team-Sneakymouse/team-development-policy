@@ -24,6 +24,7 @@ Agents in enrolled projects: read the documents below whose condition matches th
 - …adds or shares Paper util or manager code, or builds a display-only GUI inventory: [SneakyUtils](policy/sneakyutils.md) (when to use and contribute shared utilities; [display-only GUI inventories](policy/sneakyutils.md#display-only-gui-inventories): virtual containers + SneakyItems updater skip).
 - …involves custom item looks, resource packs or ItemDisplay: [Paper items / packs / ItemDisplay](policy/paper-items.md) (`item_model` looks, `magicspells:magicitem` place/use identity, server packs without plugin hosting, place defaults).
 - …puts models on players (back items, hats over the head slot): [SneakyCosmetics](policy/sneakycosmetics.md) (riding displays; cross-plugin Kotlin API shape).
+- …stores or reads **generic player / character / global** numbers or strings (or replaces Magics `VariableManager` for that): [SneakyVariables](policy/sneakyvariables.md) (shared PostgreSQL-backed variables; not Magics-only).
 - …is under review, or started as a pack-only or model-id ask: [Diff scope (review)](review/diff-scope.md) (judgement for asks that grew into APIs or services).
 
 **Optional skills** (load only when relevant; not installed by this repository)
