@@ -76,5 +76,11 @@ SneakyDB runs them as `a` 5, `b` 3, `a` 6 in one restart. `b` uses `requires-if-
 
 ## Adopting migrations in an existing plugin
 
-- An existing plugin that already has tables adopts this with the operator: its current schema becomes script 1 (or its existing numbered scripts keep their numbers), and the operator records those scripts as already applied in each database before the first jar that calls `migrate` starts there.
-- Until a plugin has adopted it, the plugin's existing way of changing its schema stays. A new plugin uses migrations from its first table.
+An existing plugin that already has tables adopts this with the operator. Until it has, its existing way of changing its schema stays. A new plugin uses migrations from its first table.
+
+- **Script 1 is what Live has today:** it reproduces the plugin's tables as they exist in Live's database. That is not the shape the code wants, and not the setup SQL in the repository, which may never have been applied or may have been applied differently. Ask the operator for the current definition of your tables on Live and write script 1 from that. Existing numbered scripts keep their numbers only if Live has every one of them applied.
+- **What Live lacks goes into script 2 and later:** a missing column or table, a different type or default, a constraint, a trigger. These scripts then run in every database like any other change, with no step by hand.
+- **Say what you compared:** the adopting pull request states under Evidence what script 1 was compared with and when, for example the operator's definition from Live and its date. "Record script 1 if Live already matches" is not an adoption plan: find out before the pull request merges.
+- **The operator compares, then records:** in each database the operator compares the tables with script 1 and records it as already applied before the first jar that calls `migrate` starts there. On a difference the operator records nothing and tells the author.
+- **A conversion by hand is the exception:** when the author and the operator agree that the operator converts the tables instead of a script 2, the exact conversion SQL is part of the pull request, and the operator rehearses it on a copy of Live before running it anywhere.
+- **The empty-database test does not cover this:** the test under [Tests](#tests) shows that the scripts apply and match the code. It can't show that script 1 matches Live.
