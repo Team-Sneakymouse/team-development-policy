@@ -1,6 +1,6 @@
 # Maven access
 
-Load when a build fails with 401 or 403 from `maven.sneakyrp.com`, when you add a dependency on a team artifact or look up its versions, or when you add a CI workflow that builds with Gradle.
+Load when a build fails with 401 or 403 from `maven.sneakyrp.com`, when you add or bump a dependency on a team artifact or look up its versions, or when you add a CI workflow that builds with Gradle.
 
 ## How builds authenticate
 
@@ -23,7 +23,11 @@ Do not work around a refusal. That rules out copying jars into the repository, s
 ## Handling the token
 
 - The token is a secret. Do not print, copy or search the `gradle.properties` in the Gradle user home, and keep the token out of commits, logs, command output and reports.
-- To read `maven-metadata.xml` yourself (for example to find the latest published version), pass the read pair to the request without echoing it, or take the version from a peer plugin's build file.
+- To read `maven-metadata.xml` yourself, pass the read pair to the request without echoing it.
+
+## Choosing a version
+
+When you add or bump a dependency on a team artifact, use the newest published version: the `<release>` in its `maven-metadata.xml`. Do not copy the version other plugins pin, even if most of them agree; that is how builds drift back to old releases. Read a peer plugin's build file only to find the coordinates, or as a fallback when the metadata cannot be read, and say so in the report. If the newest version needs a newer version of another team artifact (for example a class missing at compile or test time), bump that one to its newest as well rather than staying on the older release.
 
 ## CI
 

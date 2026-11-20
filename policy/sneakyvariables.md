@@ -5,7 +5,7 @@ Load when a Paper plugin needs **persistent generic player / character / global 
 ## Use (consumer plugins)
 
 1. Prefer `SneakyVariables.api()` over MagicSpells `VariableManager`, PocketBase copies, flat files, or a private table for the same kind of data.
-2. Depend with `compileOnly("io.github.team-sneakymouse:sneakyvariables:<published-version>")` from `https://maven.sneakyrp.com/sneakymouse` ([Maven access](./maven-access.md)). Resolve the version from Maven metadata or a peer plugin — do not invent coordinates.
+2. Depend with `compileOnly("io.github.team-sneakymouse:sneakyvariables:<published-version>")` from `https://maven.sneakyrp.com/sneakymouse` ([Maven access](./maven-access.md)). Use the newest published version from Maven metadata ([choosing a version](./maven-access.md#choosing-a-version)) — do not invent coordinates.
 3. Declare a required server dependency that loads **before** your plugin (`paper-plugin.yml` / `plugin.yml` `depend`), with `join-classpath: true` when using the paper-plugin form.
 4. Online reads/writes (`player`, `character`, `global`) only on the **main thread**. Offline / any-owner work uses `offline()` and must not block the main thread waiting on those futures.
 5. Register definitions you own with `define(plugin, …)` on enable (and after your reload); call `undefineAll(plugin)` on disable or before re-registering. Writing an undefined name is refused. Two plugins defining the same name with different scope/kind is a load error.

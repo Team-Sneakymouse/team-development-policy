@@ -7,7 +7,7 @@ Team-Sneakymouse Paper plugins share portable helpers and in-memory managers thr
 When editing a Team-Sneakymouse Paper plugin:
 
 1. Prefer existing `com.sneakyutils.util.*` APIs (and managers such as `AlteredBlockManager`) over new local copies of the same helper.
-2. Depend with `compileOnly("io.github.team-sneakymouse:sneakyutils:<published-version>")` from `https://maven.sneakyrp.com/sneakymouse` ([Maven access](./maven-access.md)). Resolve the version from Maven metadata or an existing peer plugin — do not invent coordinates.
+2. Depend with `compileOnly("io.github.team-sneakymouse:sneakyutils:<published-version>")` from `https://maven.sneakyrp.com/sneakymouse` ([Maven access](./maven-access.md)). Use the newest published version from Maven metadata ([choosing a version](./maven-access.md#choosing-a-version)) — do not invent coordinates.
 3. Declare a server load-before / `depend` on plugin `SneakyUtils` so classes and manager memory exist at runtime.
 4. Keep domain-specific helpers in the consumer. Thin wrappers that call SneakyUtils and add plugin-only behavior are fine; duplicated TextUtility/ChatUtility/InventoryUtility implementations are not.
 5. Any plugin that causes block damage or makes any temporary change to block state must use `SneakyUtils.getAlteredBlockManager()` for shared tracking and restoration. This is not limited to MagicSpells or spells; a facade is acceptable only when it delegates to the same shared manager. See [block damage and restoration](#block-damage-and-restoration).
