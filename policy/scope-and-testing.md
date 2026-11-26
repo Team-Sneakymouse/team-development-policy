@@ -14,6 +14,7 @@ Assess observable behavior, blast radius, reversibility, and existing coverage. 
 |--------|------|-----|
 | Comment out `saveDefaultConfig()` when explicitly requested | Mechanical | Narrow, known startup effect; still report the behavior change |
 | Docs-only or formatting-only edit | Mechanical | No runtime behavior |
+| Change a tuning value (damage, cooldown, price, drop chance) with no logic change | Mechanical | No new test. Don't write tests that pin tuning values; if an existing one does, change it to test the logic or an invariant, or delete it. Values that are contracts (ids, persisted keys, protocol numbers) are not tuning values |
 | Fix incorrect bounded calculation; unit harness exists | Ordinary | Behavior change; focused test if coverage is thin |
 | Rename a private method or extract a small pure helper with no behavior change | Ordinary | Prefer existing compile/tests; no new harness |
 | Add a non-security config key with local defaults | Ordinary | Bounded behavior; extend tests if the key changes logic |
@@ -47,7 +48,7 @@ For ordinary changes with no relevant runtime trigger, no extra efficiency audit
 1. **Implement tests?** Identify the behavior and coverage gap. Reuse existing coverage when sufficient; do not add redundant assertions merely because production code changed.
 2. **Run checks?** Select existing tests, build, static checks, or integration checks relevant to the risk. Running existing tests does not imply permission to implement new test infrastructure.
 
-New logic and reproducible bugs normally merit focused tests. When touching scoring, parsing, pricing or timing logic, extract it into plain code with no Bukkit dependency and add a unit test. Where feasible, demonstrate that a new regression test catches the bug before applying the fix. TDD is a useful method, not a universal condition for editing source code.
+New logic and reproducible bugs normally merit focused tests. When changing how scoring, parsing, pricing or timing logic works (not just a value it uses), extract it into plain code with no Bukkit dependency and add a unit test. Where feasible, demonstrate that a new regression test catches the bug before applying the fix. TDD is a useful method, not a universal condition for editing source code.
 
 ## Scope boundaries
 
