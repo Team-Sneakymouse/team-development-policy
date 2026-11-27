@@ -22,12 +22,27 @@ Do not build new local passive engines or movement handlers for behavior covered
 - Subscribe only while the relevant state is active. Add only participating players to timers; avoid `ALL_ONLINE`, interval-1 per-player polling, and watches on everyone “just in case.” Keep callbacks short and move database/HTTP/file work to the consumer's async path. Existing effect-recipient eligibility and protection rules still apply; trigger delivery is not permission to affect a player or block.
 - Register with the enabled consumer plugin as owner and call the service only on the server thread, including `close()`. Close obsolete subscriptions when a feature ends or reloads before replacing them. Owner disable closes subscriptions silently, so perform consumer state cleanup explicitly rather than relying on exit callbacks during disable. Do not implement the provider-owned `Triggers`, `Subscription`, or `PlayerTimer` interfaces; implement handler interfaces or test behind a consumer-owned seam instead.
 - For carried magic-item state, use **`SneakyItemsAPI.carries(...)`** or **`CarriedItemChangeEvent`**, not repeated inventory scans. Keep item identity and click handling with SneakyItems; shared world-click subscriptions do not replace `MagicItemClickEvent` for magic-item activation.
-- Report crimes through **`SneakyCrimeAPI.fire(...)`**, not by casting crime spells. SneakyCrime's `CrimeCommitEvent` owns that contract; do not invent a competing crime signal in SneakyUtils. Use `com.sneakyutils.signals` for the shared events it actually supplies (`ArrestEvent`, `DutyChangedEvent`, `ActivityEvent`).
+- Report crimes through **`SneakyCrimeAPI.fire(...)`**, not by casting crime spells. SneakyCrime's `CrimeCommitEvent` owns that contract; do not invent a competing crime signal in SneakyUtils. Use `com.sneakyutils.signals` for the shared events it actually supplies (`ArrestEvent`, `ChainedEvent`, `DutyChangedEvent`, `ActivityEvent`, and `ChronicleEvent` for [the admins' record](#reporting-gameplay-events)).
 - Features without their proper owning plugin yet live in **SneakyHoldover** until that plugin takes ownership. This is a transition home, not a reason to disable existing spells prematurely or move domain behavior into SneakyUtils. Preserve required behavior during an authorized migration; this rule does not authorize a repository-wide migration by itself.
 
 Resolve the published APIs and normal runtime dependencies before use; do not copy shared implementations into consumers. If a required behavior is not covered, report the concrete gap and propose a shared extension or scoped design decision instead of silently rebuilding a passive engine. `/triggers stats|top` provides shared diagnostics; source inspection or benchmark claims from a PR are not proof of live-server performance.
 
 Sources: [team direction](https://discord.com/channels/391355330241757205/808030927937994772/1571939928366125247), [SneakyUtils PR #25](https://github.com/Team-Sneakymouse/SneakyUtils/pull/25), and [trigger guide at its reviewed revision](https://github.com/Team-Sneakymouse/SneakyUtils/blob/cc14b9af9f18e03be6f5c68036d52830b288a84c/docs/triggers.md).
+
+## Reporting gameplay events
+
+The admins keep a record of what happens on the server between streams. The recorder plugin, SneakyChronicle, stores it, and digests and tools read it. A plugin contributes by reporting through **`com.sneakyutils.signals.ChronicleEvent`**. No plugin depends on SneakyChronicle, and SneakyChronicle adds no listener for an in-house plugin's own event classes: the owning plugin adds the report.
+
+- **Report where the moment happens, when you add or rework it.** A moment belongs in the record when a unique or important thing changes state or hands, a player does something to another player, a character reaches something (a level, a quest, a win), or a player speaks or writes in character. This includes behaviour re-implemented from disabled MagicSpells scripts. Don't sweep unrelated code for missing reports, and don't report what repeats many times a minute for one player (XP gains, movement, single hits).
+- **Type ids are contracts.** A type is `<plugin id>.<what_happened>` in lower case with underscores, or a shared subject such as `chat.message`. Readers match on it, so never rename one or change what its things and details mean; add a new type instead. List a plugin's types, with their things and details, in its README.
+- **Things have a history, details don't.** Give a thing that someone will search for (an orb, a plot, an item) as `thing(kind, id)` with the same kind and id every time. Facts about the one event are details.
+- **Speech goes in `text`.** Never copy what a player said or typed into a detail. SneakyChronicle never stores out-of-character lines or speech in private places, and it applies those rules to `text` only. The rules are hard-coded in the recorder; a reporter does not decide them.
+- **Say only what your plugin knows.** The recorder adds the server, the position, the plot and zones, and the character an account wears. Off the server thread, report by account UUID and read nothing from a live `Player`.
+- **Don't guard the call.** It works on any thread, never throws, and does nothing on a server without the recorder. Check `ChronicleEvent.hasListeners()` only to skip arguments that are costly to build.
+
+[The chronicle guide](https://github.com/Team-Sneakymouse/SneakyUtils/blob/main/docs/chronicle.md) has the calls and their limits.
+
+Done when: the moment is reported once, after it happened, with a stable type id that the plugin's README lists.
 
 ## Block damage and restoration
 
