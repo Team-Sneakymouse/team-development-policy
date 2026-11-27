@@ -21,7 +21,7 @@ Plugins own their schema: each plugin ships numbered SQL scripts in its jar, and
 - **Renumber on conflict:** if another pull request merged the same number first, renumber yours before merging, so the sequence keeps no gaps or duplicates.
 - **No schemas:** a script never creates or drops a schema. Ask the operator for a new schema before the plugin's first script that needs it reaches Dev.
 - **Only your own tables:** a plugin's tables change only through its own scripts. A change another plugin needs in your tables goes into your repository, and one you need in theirs goes into theirs.
-- **No schema statements in plugin code:** once a plugin uses migrations, its scripts are the only place its schema is defined. Remove startup `CREATE TABLE IF NOT EXISTS` and any other DDL outside `db/migrations/`.
+- **No schema statements in plugin code:** once a plugin uses migrations, its scripts are the only place its schema is defined. Remove startup `CREATE TABLE IF NOT EXISTS` and any other DDL outside `db/migrations/`. The one exception is the next partition of a partitioned table, which a static script can't create ahead of time: a script defines a function that creates it (name, bounds and all), and the plugin calls that function at run time. The plugin's code still contains no DDL. SneakyChronicle's `sneakychronicle.ensure_partition` is the example.
 - **Write for Live's data, not an empty database:** a script must work against a copy of Live. Before adding a constraint or a `NOT NULL` column, decide what happens to existing rows (a default, or a backfill in the same script). Avoid long table rewrites where you can: other servers on the same database wait on the lock while it is held.
 
 ## Versions and rollouts
