@@ -12,6 +12,8 @@ They replace content only when it exactly matches the current canonical text or 
 - files that are not valid UTF-8;
 - files with mixed line endings.
 
+Agents run the shell script as a dry run before finishing implementation tasks in enrolled projects ([stub check](../policy/stub-check.md)), so outdated stubs get caught during normal work, without anyone sweeping the repositories.
+
 A file's line endings and UTF-8 byte-order mark are kept. [`tests/test-sync-stubs.sh`](tests/test-sync-stubs.sh) runs both scripts over the same fixtures and checks that they agree.
 
 ## Contract
