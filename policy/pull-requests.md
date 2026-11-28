@@ -53,7 +53,7 @@ Then show the change in the smallest view that makes the key point clear:
 
 Use a `diff` of that view when the surrounding shape already exists and the point is what changes. Keep only the calls, files, and boundaries the reviewer needs. One view is usual.
 
-If the branch carries a [next-change](./next-change.md) migration, name its commit. If you skipped an entry, say which one and why.
+If the branch carries a [next-change](./next-change.md) migration or a [stub sync](./stub-check.md), name its commit. If you skipped an entry, say which one and why.
 
 ## Evidence
 
